@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Parcours utilisateur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: var(--stage-bg) fixed;
+    }
+
+    .board {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    .intro {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 36px 40px;
+      background: var(--card-bg);
+      box-shadow: 0 30px 40px -24px rgb(0 0 0 / 0.5);
+    }
+
+    .intro .lead {
+      max-width: 720px;
+    }
+
+    .group {
+      margin-top: 44px;
+    }
+
+    .group-title {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgb(42 63 52 / 0.35);
+    }
+
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px 24px;
+      margin-top: 22px;
+    }
+
+    .screen {
+      display: block;
+      color: var(--green);
+    }
+
+    /* Each thumbnail is the real screen, scaled down */
+    .thumb {
+      position: relative;
+      aspect-ratio: 1440 / 900;
+      overflow: hidden;
+      box-shadow: 0 14px 22px -14px rgb(0 0 0 / 0.55);
+    }
+
+    .thumb iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 900px;
+      border: 0;
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+
+    .caption {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .caption .n {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .caption .t {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .screen:hover .t {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="intro">
+      <div>
+        <p class="kicker">Maquette de l’application</p>
+        <h1 class="h1">Parcours utilisateur.</h1>
+        <p class="lead">
+          Vingt-deux écrans, une chose par page, de la connexion au
+          téléchargement de l’ebook, avec l’exemple de Camille Martin et de
+          «&nbsp;La méthode focus&nbsp;». Cliquez sur un écran pour l’ouvrir,
+          puis passez au suivant avec la barre du bas ou les flèches du clavier.
+        </p>
+      </div>
+      <a class="btn btn-primary" href="00-connexion.html">Parcourir la maquette</a>
+    </header>
+
+    <div id="groups"></div>
+  </main>
+
+  <script src="proto.js"></script>
+  <script>
+    const screens = window.NOLIO_SCREENS;
+    const groups = document.getElementById("groups");
+    const pad = (value) => String(value).padStart(2, "0");
+
+    [...new Set(screens.map((screen) => screen.group))].forEach((group) => {
+      const section = document.createElement("section");
+      section.className = "group";
+      const items = screens
+        .map((screen, index) => ({ ...screen, index }))
+        .filter((screen) => screen.group === group);
+
+      section.innerHTML = `
+        <div class="group-title">
+          <h2 class="h2">${group}</h2>
+          <span class="small muted">${items.length} écrans</span>
+        </div>
+        <div class="screens">
+          ${items
+            .map(
+              (screen) => `
+            <a class="screen" href="${screen.file}">
+              <div class="thumb"><iframe src="${screen.file}" loading="lazy" tabindex="-1" title="${screen.title}"></iframe></div>
+              <div class="caption"><span class="n textured">${pad(screen.index)}</span><span class="t">${screen.title}</span></div>
+            </a>`,
+            )
+            .join("")}
+        </div>`;
+      groups.appendChild(section);
+    });
+
+    // Scale every thumbnail to the width of its column
+    const fit = () =>
+      document.querySelectorAll(".thumb").forEach((thumb) => {
+        thumb.querySelector("iframe").style.transform = `scale(${thumb.clientWidth / 1440})`;
+      });
+    fit();
+    window.addEventListener("resize", fit);
+  </script>
+</body>
+</html>

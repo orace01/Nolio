@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Kit de marque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .content { display: grid; grid-template-columns: 1fr 400px; gap: 56px; min-height: 0; padding: 32px 56px 28px; }
+    .form { display: flex; flex-direction: column; gap: 22px; min-height: 0; overflow: auto; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    .upload { display: flex; align-items: center; gap: 16px; padding: 14px; border: 1.2px dashed var(--line-strong); }
+    .monogram { display: grid; place-items: center; width: 54px; height: 54px; flex: none; font-size: 18px; font-weight: 700; color: #fff; background: var(--green); }
+    .portrait { display: grid; place-items: end center; width: 54px; height: 54px; flex: none; overflow: hidden; background: #b9c3bd; }
+    .portrait svg { width: 44px; height: 44px; fill: #eef1ef; }
+    .swatches { display: flex; gap: 8px; }
+    .swatch { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; color: var(--grey-green); }
+    .swatch span:first-child { width: 54px; height: 40px; border: 1px solid rgb(0 0 0 / 0.15); }
+    .swatch.add span:first-child { display: grid; place-items: center; border: 1.2px dashed var(--line-strong); font-size: 18px; color: var(--green); }
+    .preview { display: flex; flex-direction: column; gap: 12px; }
+    .preview .pg { font-size: 20px; box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55); }
+    .pg .about-photo { display: grid; place-items: end center; width: 34%; aspect-ratio: 1; overflow: hidden; background: #b9c3bd; }
+    .pg .about-photo svg { width: 80%; fill: #eef1ef; }
+    .pg .about-name { margin-top: 0.9em; font-family: "Montserrat", sans-serif; font-size: 1em; font-weight: 700; text-transform: uppercase; color: var(--green); }
+    .pg .cta { margin-top: 1.1em; padding: 0.9em 1em; color: #fff; background: var(--green); }
+    .pg .cta p { font-family: "Montserrat", sans-serif; font-size: 0.5em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <nav class="menu" aria-label="Menu">
+          <a href="19-bibliotheque.html">Bibliothèque</a>
+          <a class="current" href="20-kit-de-marque.html">Kit de marque</a>
+          <a href="21-compte.html">Compte</a>
+        </nav>
+        <div class="user">
+          <span class="quota">Formule Gratuite</span>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="content">
+        <section class="form">
+          <div>
+            <p class="kicker">Kit de marque</p>
+            <h1 class="h1">Votre marque, dans chaque ebook.</h1>
+            <p class="lead" style="max-width: 640px">Réglé une fois, appliqué à tous vos ebooks&nbsp;: couverture, page «&nbsp;À propos&nbsp;» et appel à l’action.</p>
+          </div>
+          <div class="row">
+            <div class="field"><span class="label">Logo</span><div class="upload"><span class="monogram">CM</span><span class="small">Remplacer le logo<br><span class="hint">PNG ou SVG, fond transparent</span></span></div></div>
+            <div class="field"><span class="label">Votre photo</span><div class="upload"><span class="portrait"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="8"/><path d="M4 40c0-9 7-15 16-15s16 6 16 15z"/></svg></span><span class="small">Importer une photo<br><span class="hint">Carrée, au moins 800 px</span></span></div></div>
+          </div>
+          <div class="field">
+            <span class="label">Couleurs de marque</span>
+            <div class="swatches">
+              <span class="swatch"><span style="background: #2a3f34"></span>Vert</span>
+              <span class="swatch"><span style="background: #d8cfc0"></span>Sable</span>
+              <span class="swatch"><span style="background: #a4553a"></span>Terracotta</span>
+              <span class="swatch add"><span>+</span>Ajouter</span>
+            </div>
+            <span class="hint">Proposées à côté des thèmes de couleurs lors du design.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="bio">Bio courte</label>
+            <textarea class="textarea" id="bio" style="min-height: 76px">Coach en productivité depuis 2020, j’aide les indépendants à retrouver du temps pour le travail qui compte, sans applications ni méthode rigide.</textarea>
+          </div>
+          <div class="row">
+            <div class="field"><label class="label" for="cta">Appel à l’action par défaut</label><input class="input" id="cta" value="Réservez un appel découverte"></div>
+            <div class="field"><label class="label" for="link">Lien</label><input class="input" id="link" value="https://exemple.com/rendez-vous"></div>
+          </div>
+        </section>
+        <aside class="preview">
+          <p class="kicker">Aperçu&nbsp;: dernière page</p>
+          <div class="pg">
+            <span class="run">À propos de l’autrice</span>
+            <span class="about-photo"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="8"/><path d="M4 40c0-9 7-15 16-15s16 6 16 15z"/></svg></span>
+            <p class="about-name">Camille Martin</p>
+            <div class="opener-rule"></div>
+            <p>Coach en productivité depuis 2020, j’aide les indépendants à retrouver du temps pour le travail qui compte, sans applications ni méthode rigide.</p>
+            <div class="cta"><p>Réservez un appel découverte</p></div>
+            <span class="folio">12</span>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

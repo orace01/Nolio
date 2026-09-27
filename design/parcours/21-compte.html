@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Compte et abonnement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .content { display: flex; flex-direction: column; gap: 24px; min-height: 0; padding: 32px 56px 28px; overflow: auto; }
+    .tabs { display: flex; gap: 26px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey-green); }
+    .tabs .on { font-weight: 700; color: var(--green); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 16px; }
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .plan { display: flex; flex-direction: column; gap: 14px; padding: 22px; }
+    .plan.pro { border: 1.6px solid var(--green); background: var(--surface-strong); }
+    .plan-head { display: flex; align-items: baseline; justify-content: space-between; }
+    .price b { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: var(--green); }
+    .perks li { display: flex; align-items: baseline; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--green); }
+    .plan .btn { align-self: flex-start; margin-top: auto; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <nav class="menu" aria-label="Menu">
+          <a href="19-bibliotheque.html">Bibliothèque</a>
+          <a href="20-kit-de-marque.html">Kit de marque</a>
+          <a class="current" href="21-compte.html">Compte</a>
+        </nav>
+        <div class="user">
+          <span class="quota">Formule Gratuite</span>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="content">
+        <div>
+          <p class="kicker">Compte</p>
+          <h1 class="h1">Votre formule.</h1>
+        </div>
+        <nav class="tabs" aria-label="Rubriques du compte"><span>Profil</span><span class="on">Formule</span><span>Factures</span></nav>
+        <div class="plans">
+          <section class="plan panel">
+            <div class="plan-head"><h2 class="h2">Gratuit</h2><span class="tag">Actuelle</span></div>
+            <p class="price"><b>0 €</b></p>
+            <ul class="perks"><li><span class="check"></span>1 ebook, jusqu’à 15 pages</li><li><span class="check"></span>Styles et thèmes Basiques</li><li><span class="check"></span>PDF interactif, avec mention Nolio</li></ul>
+          </section>
+          <section class="plan panel">
+            <div class="plan-head"><h2 class="h2">Starter</h2></div>
+            <p class="price"><b>12 €</b> <span class="small muted">par mois</span></p>
+            <ul class="perks"><li><span class="check"></span>3 ebooks par mois, jusqu’à 40 pages</li><li><span class="check"></span>Tous les styles Premium</li><li><span class="check"></span>PDF à imprimer, sans mention</li></ul>
+            <span class="btn btn-secondary">Choisir Starter</span>
+          </section>
+          <section class="plan pro">
+            <div class="plan-head"><h2 class="h2">Pro</h2><span class="tag tag-pro">Le plus complet</span></div>
+            <p class="price"><b>29 €</b> <span class="small muted">par mois</span></p>
+            <ul class="perks"><li><span class="check"></span>10 ebooks par mois, jusqu’à 120 pages</li><li><span class="check"></span>Votre propre style</li><li><span class="check"></span>Images générées par IA</li><li><span class="check"></span>EPUB</li></ul>
+            <span class="btn btn-primary">Choisir Pro</span>
+          </section>
+        </div>
+        <p class="hint">Annuel&nbsp;: 2 mois offerts sur chaque formule. Aucune facture pour l’instant.</p>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

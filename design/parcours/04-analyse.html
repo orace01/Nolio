@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Analyse de l’idée</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .idea { padding: 16px 20px; border-left: 2px solid var(--green); font-family: "Source Serif 4", serif; font-size: 16px; font-style: italic; line-height: 1.6; color: var(--ink); background: var(--surface); }
+    .found { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin-top: 24px; }
+    .found li { display: grid; grid-template-columns: 20px 1fr; gap: 12px; padding: 15px 0; border-top: 1px solid var(--line); }
+    .found .check { margin-top: 6px; }
+    .found .k { font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey-green); }
+    .found .v { margin-top: 4px; font-size: 16px; font-weight: 600; color: var(--green); }
+    .open { margin-top: 24px; padding: 16px 20px; border: 1.2px dashed var(--line-strong); }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <ol class="stepper" aria-label="Étapes de création">
+          <li class="current"><span class="n">1</span><span class="name">Votre idée</span></li>
+          <li><span class="n">2</span><span class="name">Précisions</span></li>
+          <li><span class="n">3</span><span class="name">Design</span></li>
+          <li><span class="n">4</span><span class="name">Validation</span></li>
+          <li><span class="n">5</span><span class="name">Votre ebook</span></li>
+        </ol>
+        <div class="user" style="margin-left: 0">
+          <a class="save" href="19-bibliotheque.html">Enregistrer et quitter</a>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="flow">
+        <div class="flow-inner">
+          <p class="kicker">Étape 1 · Votre idée</p>
+          <h1 class="question">Voici ce que nous avons compris.</h1>
+          <p class="lead">Nolio a analysé votre idée. Trois questions vont préciser le reste.</p>
+          <div class="flow-body">
+            <blockquote class="idea">«&nbsp;Un guide pratique pour aider les indépendants débordés à mieux gérer leur temps. Je veux présenter mes 5 rituels, avec une courte vidéo pour chacun…&nbsp;»</blockquote>
+            <ul class="found">
+              <li><span class="check"></span><div><p class="k">Type d’ebook</p><p class="v">Un guide pratique en PDF</p></div></li>
+              <li><span class="check"></span><div><p class="k">Sujet</p><p class="v">L’organisation du temps, en 5 rituels</p></div></li>
+              <li><span class="check"></span><div><p class="k">Contenus</p><p class="v">Une courte vidéo par rituel</p></div></li>
+              <li><span class="check"></span><div><p class="k">Objectif</p><p class="v">Obtenir des rendez-vous découverte</p></div></li>
+            </ul>
+            <div class="open">
+              <p class="label">Encore à préciser</p>
+              <p class="small" style="margin-top: 4px">Le public exact, les liens de vos vidéos et la longueur de l’ebook.</p>
+            </div>
+          </div>
+          <div class="flow-actions">
+            <a class="arrow-link" href="03-idee.html">Retour</a>
+            
+            <a class="btn btn-primary" href="05-pour-qui.html">Continuer</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

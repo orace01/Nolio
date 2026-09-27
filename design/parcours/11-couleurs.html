@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Couleurs et police</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400&family=Playfair+Display:wght@600&family=Lato:wght@400&family=DM+Serif+Display&family=DM+Sans:wght@400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .theme .preview { padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); }
+    .swatches { display: flex; gap: 6px; }
+    .swatches span { width: 22px; height: 22px; border: 1px solid rgb(0 0 0 / 0.12); }
+    .sample-title { margin-top: 10px; font-size: 18px; line-height: 1.1; }
+    .sample-body { margin-top: 6px; font-size: 13px; line-height: 1.5; color: #2b312d; }
+    .custom .preview { display: grid; place-items: center; min-height: 104px; border-style: dashed; background: transparent; font-size: 28px; color: var(--green); }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <ol class="stepper" aria-label="Étapes de création">
+          <li class="done"><span class="n">1</span><span class="name">Votre idée</span></li>
+          <li class="done"><span class="n">2</span><span class="name">Précisions</span></li>
+          <li class="current"><span class="n">3</span><span class="name">Design</span></li>
+          <li><span class="n">4</span><span class="name">Validation</span></li>
+          <li><span class="n">5</span><span class="name">Votre ebook</span></li>
+        </ol>
+        <div class="user" style="margin-left: 0">
+          <a class="save" href="19-bibliotheque.html">Enregistrer et quitter</a>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="flow">
+        <div class="flow-inner wide">
+          <p class="kicker">Design · 2 sur 5</p>
+          <h1 class="question">Vos couleurs et votre police.</h1>
+          <p class="lead">Chaque thème associe une couleur et un duo de polices, pour les titres et pour le texte.</p>
+          <div class="flow-body">
+            <div class="options three">
+              <div class="option selected theme"><div class="preview"><div class="swatches"><span style="background: #2a3f34"></span><span style="background: #d8cfc0"></span><span style="background: #f4f3ef"></span></div><p class="sample-title" style="font-family: Montserrat; font-weight: 700; text-transform: uppercase; color: #2a3f34">La méthode focus</p><p class="sample-body" style="font-family: 'Source Serif 4'">Cinq rituels pour travailler moins et mieux.</p></div><span class="title">Forêt <span class="tag tag-ok">Basique</span></span><span class="desc">Vert profond · Montserrat et Source Serif</span></div>
+              <div class="option theme"><div class="preview"><div class="swatches"><span style="background: #243a5e"></span><span style="background: #c9d3e3"></span><span style="background: #f4f3ef"></span></div><p class="sample-title" style="font-family: Fraunces; font-weight: 600; color: #243a5e">La méthode focus</p><p class="sample-body" style="font-family: Inter">Cinq rituels pour travailler moins et mieux.</p></div><span class="title">Nuit <span class="tag tag-ok">Basique</span></span><span class="desc">Bleu nuit · Fraunces et Inter</span></div>
+              <div class="option theme"><div class="preview"><div class="swatches"><span style="background: #9a7426"></span><span style="background: #eadfc8"></span><span style="background: #f7f3ea"></span></div><p class="sample-title" style="font-family: Montserrat; font-weight: 700; color: #9a7426">La méthode focus</p><p class="sample-body" style="font-family: Lato">Cinq rituels pour travailler moins et mieux.</p></div><span class="title">Sable <span class="tag tag-ok">Basique</span></span><span class="desc">Ocre · Montserrat et Lato</span></div>
+              <div class="option theme"><div class="preview"><div class="swatches"><span style="background: #a4553a"></span><span style="background: #f0d9cc"></span><span style="background: #f7f2ec"></span></div><p class="sample-title" style="font-family: 'Playfair Display'; font-weight: 600; color: #a4553a">La méthode focus</p><p class="sample-body" style="font-family: Lato">Cinq rituels pour travailler moins et mieux.</p></div><span class="title">Terre <span class="tag">Premium</span></span><span class="desc">Terracotta · Playfair Display et Lato</span></div>
+              <div class="option theme"><div class="preview"><div class="swatches"><span style="background: #1d1d1d"></span><span style="background: #d9d9d6"></span><span style="background: #f4f3ef"></span></div><p class="sample-title" style="font-family: 'DM Serif Display'; ; color: #1d1d1d">La méthode focus</p><p class="sample-body" style="font-family: 'DM Sans'">Cinq rituels pour travailler moins et mieux.</p></div><span class="title">Encre <span class="tag">Premium</span></span><span class="desc">Noir profond · DM Serif Display et DM Sans</span></div>
+              <div class="option theme custom"><div class="preview">+</div><span class="title">Vos couleurs <span class="tag tag-pro">Pro</span></span><span class="desc">Choisissez votre couleur d’accent et vos polices.</span></div>
+            </div>
+          </div>
+          <div class="flow-actions">
+            <a class="arrow-link" href="09-style.html">Retour</a>
+            
+            <a class="btn btn-primary" href="12-ecriture.html">Continuer</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Création en cours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tasks li { display: grid; grid-template-columns: 1fr 160px 110px; gap: 16px; align-items: center; padding: 15px 0; border-top: 1px solid var(--line); font-size: 15px; color: var(--green); }
+    .tasks li:last-child { border-bottom: 1px solid var(--line); }
+    .tasks .state { font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; text-align: right; }
+    .tasks .waiting { color: var(--grey-green); }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <ol class="stepper" aria-label="Étapes de création">
+          <li class="done"><span class="n">1</span><span class="name">Votre idée</span></li>
+          <li class="done"><span class="n">2</span><span class="name">Précisions</span></li>
+          <li class="done"><span class="n">3</span><span class="name">Design</span></li>
+          <li class="current"><span class="n">4</span><span class="name">Validation</span></li>
+          <li><span class="n">5</span><span class="name">Votre ebook</span></li>
+        </ol>
+        <div class="user" style="margin-left: 0">
+          <a class="save" href="19-bibliotheque.html">Enregistrer et quitter</a>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="flow">
+        <div class="flow-inner">
+          <p class="kicker">Création en cours</p>
+          <h1 class="question">Nous créons votre ebook.</h1>
+          <p class="lead">Restez ici ou revenez plus tard&nbsp;: nous vous prévenons par email dès qu’il est prêt.</p>
+          <div class="flow-body">
+            <div class="bar"><span style="width: 68%"></span></div>
+            <p class="hint" style="margin-top: 8px">Encore environ 1 minute.</p>
+            <ul class="tasks" style="margin-top: 24px">
+              <li><span>Rédaction du texte</span><span></span><span class="state">Terminé</span></li>
+              <li><span>Mise en page</span><span></span><span class="state">Terminé</span></li>
+              <li><span>Intégration des vidéos et des liens</span><span class="bar"><span style="width: 55%"></span></span><span class="state">En cours</span></li>
+              <li><span>Dernière vérification</span><span></span><span class="state waiting">À venir</span></li>
+            </ul>
+          </div>
+          <div class="flow-actions">
+            <a class="arrow-link" href="19-bibliotheque.html">Revenir à la bibliothèque</a>
+            
+            <a class="btn btn-primary" href="17-votre-ebook.html">Voir mon ebook</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

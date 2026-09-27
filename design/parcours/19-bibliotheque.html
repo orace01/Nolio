@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Bibliothèque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .content { display: flex; flex-direction: column; gap: 30px; min-height: 0; padding: 36px 56px; overflow: auto; }
+    .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    .usage { display: flex; align-items: center; gap: 26px; }
+    .usage .bar { width: 140px; margin-top: 8px; }
+    .shelf { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+    .book .cover .title { font-size: 22px !important; }
+    .book .meta { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 14px; }
+    .book .name { font-size: 14px; font-weight: 700; color: var(--green); }
+    .new { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; aspect-ratio: 3 / 4; border: 1.4px dashed var(--line-strong); text-align: center; color: var(--green); }
+    .new .plus { width: 36px; height: 36px; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <nav class="menu" aria-label="Menu">
+          <a class="current" href="19-bibliotheque.html">Bibliothèque</a>
+          <a href="20-kit-de-marque.html">Kit de marque</a>
+          <a href="21-compte.html">Compte</a>
+        </nav>
+        <div class="user">
+          <span class="quota">Formule Gratuite</span>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="content">
+        <div class="head">
+          <div>
+            <p class="kicker">Bonjour Camille</p>
+            <h1 class="h1">Votre bibliothèque.</h1>
+          </div>
+          <div class="usage">
+            <div>
+              <p class="label">Formule Gratuite</p>
+              <div class="bar"><span style="width: 100%"></span></div>
+              <p class="hint" style="margin-top: 6px">1 ebook sur 1</p>
+            </div>
+            <a class="btn btn-secondary" href="21-compte.html">Voir les formules</a>
+          </div>
+        </div>
+        <div class="shelf">
+          <a class="book" href="17-votre-ebook.html">
+            <span class="cover monograph"><span class="title" style="top: 26%">La méthode focus</span><span class="rule" style="top: 62%"></span></span>
+            <div class="meta"><span class="name">La méthode focus</span><span class="tag">Prêt</span></div>
+            <p class="hint" style="margin-top: 4px">Guide · 12 pages · 2 vidéos</p>
+          </a>
+          <a class="new" href="21-compte.html">
+            <svg class="icon plus" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span class="label">Nouvel ebook</span>
+            <span class="hint">Passez en Starter pour créer 3 ebooks par mois.</span>
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

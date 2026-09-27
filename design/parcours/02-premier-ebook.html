@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Votre premier ebook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .toc { border-bottom: 1px solid var(--line); }
+    .toc li { display: grid; grid-template-columns: 64px 1fr auto; align-items: baseline; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .toc .n { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .toc li:nth-child(even) .n { background-position: 88% 38%; }
+    .toc .step { font-size: 15px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--green); }
+    .toc .time { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--grey-green); white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <div class="user">
+          <span class="quota">Formule Gratuite</span>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="flow">
+        <div class="flow-inner">
+          <p class="kicker">Votre premier ebook</p>
+          <h1 class="question">Cinq étapes, une chose à la fois.</h1>
+          <p class="lead">Environ 10 minutes de votre temps. Nolio s’occupe du texte, de la mise en page et de l’intégration de vos vidéos.</p>
+          <div class="flow-body">
+            <ol class="toc" aria-label="Étapes de création">
+              <li><span class="n textured">01</span><div><p class="step">Votre idée</p><p class="small">Décrivez votre projet en quelques phrases, Nolio l’analyse.</p></div><span class="time">2 min</span></li>
+              <li><span class="n textured">02</span><div><p class="step">Précisions</p><p class="small">Quelques questions pour comprendre exactement ce que vous voulez.</p></div><span class="time">3 min</span></li>
+              <li><span class="n textured">03</span><div><p class="step">Design</p><p class="small">Style, couleurs, écriture, illustrations et images, un choix par page.</p></div><span class="time">3 min</span></li>
+              <li><span class="n textured">04</span><div><p class="step">Validation</p><p class="small">Le sommaire et un aperçu du style, avant de lancer la création.</p></div><span class="time">1 min</span></li>
+              <li><span class="n textured">05</span><div><p class="step">Votre ebook</p><p class="small">Feuilletez-le, commentez si besoin, puis téléchargez-le.</p></div><span class="time">À votre rythme</span></li>
+            </ol>
+          </div>
+          <div class="flow-actions">
+            <a class="arrow-link" href="01-bienvenue.html">Retour</a>
+            
+            <a class="btn btn-primary" href="03-idee.html">Commencer</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

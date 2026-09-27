@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Option Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .behind { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+    .veil { position: fixed; inset: 0; background: rgb(20 30 24 / 0.55); }
+    .dialog { position: fixed; top: 50%; left: 50%; display: grid; grid-template-columns: 330px 1fr; width: 880px; background: var(--card-bg); box-shadow: 0 40px 60px -20px rgb(0 0 0 / 0.6); transform: translate(-50%, -54%); }
+    .visual { position: relative; min-height: 460px; background: url("assets/hero-leaves.jpg") 60% 40% / cover; }
+    .visual .cover { position: absolute; bottom: 36px; left: 50%; width: 150px; transform: translateX(-50%); }
+    .visual .cover .big { font-size: 62px; }
+    .dialog .body { display: flex; flex-direction: column; gap: 16px; padding: 34px; }
+    .close { align-self: flex-end; margin-bottom: -8px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--green); }
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .plan { display: flex; flex-direction: column; gap: 8px; padding: 16px; border: 1px solid var(--line-strong); background: var(--surface); }
+    .plan b { font-size: 24px; font-weight: 700; color: var(--green); }
+    .plan ul li { padding: 5px 0; border-top: 1px solid var(--line); font-size: 12px; color: var(--green); }
+    .actions { display: flex; align-items: center; gap: 20px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <iframe class="behind" src="09-style.html" title="Choix du style" tabindex="-1"></iframe>
+  <div class="veil"></div>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="premium-title">
+    <div class="visual"><span class="cover studio"><span class="big">05</span><span class="title">La méthode focus</span></span></div>
+    <div class="body">
+      <a class="close" href="09-style.html">Fermer</a>
+      <p class="kicker">Style Premium</p>
+      <h1 class="h1" id="premium-title" style="font-size: 26px">Studio fait partie des styles Premium.</h1>
+      <p class="small">Les styles Premium sont inclus dans les formules Starter et Pro. Vous pouvez aussi continuer avec un style Basique et changer plus tard.</p>
+      <div class="plans">
+        <div class="plan"><span class="label">Starter</span><p><b>12 €</b> <span class="small muted">par mois</span></p><ul><li>Tous les styles Premium</li><li>3 ebooks par mois</li><li>Jusqu’à 40 pages</li></ul></div>
+        <div class="plan"><span class="label">Pro</span><p><b>29 €</b> <span class="small muted">par mois</span></p><ul><li>Votre propre style</li><li>Images générées par IA</li><li>10 ebooks par mois</li></ul></div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="11-couleurs.html">Choisir Starter</a>
+        <a class="btn btn-secondary" href="11-couleurs.html">Choisir Pro</a>
+        <a class="arrow-link" href="11-couleurs.html">Rester en Gratuit</a>
+      </div>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .photo {
+      position: relative;
+      background: url("assets/hero-leaves.jpg") 50% 30% / cover;
+    }
+
+    .photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgb(0 18 10 / 0.55), transparent 45%);
+    }
+
+    .photo .brand {
+      position: absolute;
+      top: 34px;
+      left: 34px;
+      z-index: 1;
+      font-size: 21px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .photo .side {
+      position: absolute;
+      bottom: 56px;
+      left: 56px;
+      z-index: 1;
+      color: #fff;
+    }
+
+    .photo .side p:first-child {
+      font-size: 12px;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .photo .side p:last-child {
+      margin-top: 6px;
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .panel-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: min(420px, 100%);
+      margin: 0 auto;
+    }
+
+    .panel-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .forgot {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .alt {
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    .alt a {
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app split">
+      <div class="photo">
+        <span class="brand">Nolio.</span>
+        <div class="side">
+          <p>Votre expertise, reliée en</p>
+          <p>Vrai livre.</p>
+        </div>
+      </div>
+
+      <div class="panel-form">
+        <p class="kicker">Connexion</p>
+        <h1 class="h1">Content de vous revoir.</h1>
+        <form action="01-bienvenue.html">
+          <div class="field">
+            <label class="label" for="email">Adresse email</label>
+            <input class="input" id="email" type="email" value="camille.martin@exemple.com">
+          </div>
+          <div class="field">
+            <label class="label" for="password">Mot de passe</label>
+            <input class="input" id="password" type="password" value="motdepasse">
+          </div>
+          <a class="forgot" href="#">Mot de passe oublié&nbsp;?</a>
+          <div>
+            <a class="btn btn-primary" href="01-bienvenue.html">Se connecter</a>
+          </div>
+        </form>
+        <p class="alt">Pas encore de compte&nbsp;? <a href="#">Créer un compte</a></p>
+      </div>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nolio · Validation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .outline li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--green); }
+    .outline li:last-child { border-bottom: 1px solid var(--line); }
+    .outline .n { font-weight: 700; }
+    .outline .meta { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--grey-green); }
+    .mini-video { position: relative; width: 20px; height: 14px; background: var(--green); }
+    .mini-video::after { content: ""; position: absolute; top: 50%; left: 50%; border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; border-left: 5px solid #fff; transform: translate(-35%, -50%); }
+    .look { display: grid; grid-template-columns: 150px 220px; gap: 20px; align-items: start; }
+    .look .pg { font-size: 11px; box-shadow: 0 14px 22px -14px rgb(0 0 0 / 0.5); }
+    .choices { margin-top: 18px; }
+    .choices div { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--green); }
+    .choices dt { color: var(--grey-green); }
+    .choices dd { font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="app">
+      <header class="topbar">
+        <span class="logo">Nolio.</span>
+        <ol class="stepper" aria-label="Étapes de création">
+          <li class="done"><span class="n">1</span><span class="name">Votre idée</span></li>
+          <li class="done"><span class="n">2</span><span class="name">Précisions</span></li>
+          <li class="done"><span class="n">3</span><span class="name">Design</span></li>
+          <li class="current"><span class="n">4</span><span class="name">Validation</span></li>
+          <li><span class="n">5</span><span class="name">Votre ebook</span></li>
+        </ol>
+        <div class="user" style="margin-left: 0">
+          <a class="save" href="19-bibliotheque.html">Enregistrer et quitter</a>
+          <span class="avatar">CM</span>
+        </div>
+      </header>
+      <main class="flow">
+        <div class="flow-inner wide">
+          <p class="kicker">Validation</p>
+          <h1 class="question">Tout est prêt. On valide&nbsp;?</h1>
+          <p class="lead">Voici le sommaire prévu et un aperçu de votre style. Vous pourrez encore commenter l’ebook une fois créé.</p>
+          <div class="flow-body">
+            <div class="two">
+              <section>
+                <p class="label">Sommaire prévu · 12 pages</p>
+                <ol class="outline" style="margin-top: 10px">
+                  <li><span class="n">01</span><span>Pourquoi vos journées vous échappent</span><span class="meta">p. 2</span></li>
+                  <li><span class="n">02</span><span>Rituel 1&nbsp;: la page du matin</span><span class="meta"><span class="mini-video" aria-label="Vidéo"></span>p. 4</span></li>
+                  <li><span class="n">03</span><span>Rituel 2&nbsp;: les trois priorités</span><span class="meta"><span class="mini-video" aria-label="Vidéo"></span>p. 6</span></li>
+                  <li><span class="n">04</span><span>Rituel 3&nbsp;: l’email en deux passages</span><span class="meta">p. 8</span></li>
+                  <li><span class="n">05</span><span>Rituel 4&nbsp;: les blocs de concentration</span><span class="meta">p. 9</span></li>
+                  <li><span class="n">06</span><span>Rituel 5&nbsp;: la revue du vendredi</span><span class="meta">p. 10</span></li>
+                  <li><span class="n">07</span><span>Votre plan sur 30 jours</span><span class="meta">p. 11</span></li>
+                  <li><span class="n">08</span><span>Réservons un appel</span><span class="meta"><span class="label" style="font-size: 9px">Lien</span>p. 12</span></li>
+                </ol>
+              </section>
+              <section>
+                <p class="label">Aperçu du style</p>
+                <div class="look" style="margin-top: 10px">
+                  <span class="cover monograph"><span class="title" style="top: 26%; font-size: 17px">La méthode focus</span><span class="rule" style="top: 60%"></span></span>
+                  <div class="pg">
+                    <span class="run">Rituel 1</span>
+                    <p class="opener-title" style="margin-top: 0">La page du matin</p>
+                    <div class="opener-rule"></div>
+                    <p>Avant d’ouvrir vos emails, prenez dix minutes pour écrire ce qui compte vraiment aujourd’hui.</p>
+                    <div class="video"><span class="play"></span><div><p class="video-kind">Vidéo · 4 min</p><p class="video-name">La page du matin</p></div><svg class="qr" viewBox="0 0 7 7" aria-hidden="true"><path d="M0 0h3v3H0zM1 1v1h1V1zM4 0h3v3H4zM5 1v1h1V1zM0 4h3v3H0zM1 5v1h1V5zM4 4h1v1H4zM6 4h1v1H6zM5 5h1v1H5zM4 6h1v1H4zM6 6h1v1H6z" fill-rule="evenodd"/></svg></div>
+                    <span class="folio">4</span>
+                  </div>
+                </div>
+                <dl class="choices">
+                  <div><dt>Style</dt><dd>Monographie</dd></div>
+                  <div><dt>Couleurs</dt><dd>Forêt</dd></div>
+                  <div><dt>Écriture</dt><dd>Direct et pratique</dd></div>
+                  <div><dt>Illustrations</dt><dd>Icônes</dd></div>
+                </dl>
+              </section>
+            </div>
+          </div>
+          <div class="flow-actions">
+            <a class="arrow-link" href="14-images.html">Retour</a>
+            
+            <a class="btn btn-primary" href="16-creation.html">Valider et créer mon ebook</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="proto.js"></script>
+</body>
+</html>
