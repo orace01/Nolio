@@ -415,6 +415,12 @@
   gap: 6px;
 }
 
+.ownActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
 /* Colors */
 
 .themePreview {
@@ -720,6 +726,11 @@
   stroke-linejoin: round;
 }
 
+.generated .generatedPhoto {
+  position: relative;
+  overflow: hidden;
+}
+
 .lockedPart {
   opacity: 0.45;
 }
@@ -830,4 +841,118 @@
 .choices dd {
   font-weight: 700;
   text-align: right;
+}
+
+/* Design studio */
+
+.studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 300px;
+  padding-right: 6px;
+  overflow: auto;
+  list-style: none;
+}
+
+.message {
+  max-width: 88%;
+  padding: 11px 14px;
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.fromAssistant {
+  align-self: flex-start;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  background: var(--surface-strong);
+}
+
+.fromUser {
+  align-self: flex-end;
+  color: #fff;
+  background: var(--green-deep);
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.composer textarea {
+  min-height: 64px;
+}
+
+.proposals {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proposal {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+
+.proposalChosen {
+  border-color: var(--green-deep);
+  background: var(--surface-strong);
+  box-shadow: inset 0 0 0 0.8px var(--green-deep);
+}
+
+.proposalCover {
+  width: 76px;
+}
+
+.proposalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.proposalName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.proposalSwatches {
+  display: flex;
+  gap: 5px;
+}
+
+.proposalSwatches span {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgb(0 0 0 / 0.12);
+}
+
+.emptyProposals {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 24px;
+  border: 1.2px dashed var(--line-strong);
+  text-align: center;
 }

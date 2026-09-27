@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
+import { api } from "@/lib/app/api";
 import { hostname, videoSource } from "@/lib/app/content";
 import { newId, updateDraft, useDraft, type MediaItem } from "@/lib/app/store";
 import button from "../ui/Button.module.css";
@@ -50,6 +51,20 @@ export function MediaStep() {
     updateDraft({ media: [...draft.media, item] });
     setLink("");
     setInvalid(false);
+
+    // The platform's own title replaces "Video 1", unless the user renamed it meanwhile
+    if (video) {
+      void api<{ title: string | null }>("/api/media/inspect", { body: { url } })
+        .then(({ title }) => {
+          if (!title) return;
+          updateDraft((current) => ({
+            media: current.media.map((entry) =>
+              entry.id === item.id && entry.title === item.title ? { ...entry, title } : entry,
+            ),
+          }));
+        })
+        .catch(() => {});
+    }
   };
 
   const addFiles = (files: FileList | null) => {

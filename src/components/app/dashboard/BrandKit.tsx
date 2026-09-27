@@ -9,7 +9,7 @@ import { EbookPage } from "../ebook/EbookPage";
 import { Silhouette } from "../ebook/Visuals";
 import button from "../ui/Button.module.css";
 import field from "../ui/Field.module.css";
-import { shrinkImage } from "../ui/images";
+import { storeImage } from "../ui/images";
 import ui from "../ui/ui.module.css";
 import { useAppText } from "../useAppText";
 import styles from "./dashboard.module.css";
@@ -55,7 +55,7 @@ export function BrandKit() {
     const file = files?.[0];
     if (!file || !file.type.startsWith("image/")) return;
     try {
-      const data = await shrinkImage(file, key === "logo" ? 400 : 600, key === "logo" ? "image/png" : "image/jpeg");
+      const data = await storeImage(file, key === "logo" ? 400 : 600, key === "logo" ? "image/png" : "image/jpeg");
       updateBrand({ [key]: data });
     } catch {
       // An unreadable file changes nothing

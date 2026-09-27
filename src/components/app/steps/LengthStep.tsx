@@ -2,6 +2,7 @@
 
 import { canUse } from "@/lib/app/account";
 import { LENGTHS } from "@/lib/app/catalog";
+import { getAnalysis } from "@/lib/app/content";
 import { updateDraft, useDraft, usePlan } from "@/lib/app/store";
 import { FlowPage, NextAction } from "../ui/FlowPage";
 import { Option, OptionGrid } from "../ui/Option";
@@ -15,8 +16,7 @@ export function LengthStep() {
   const plan = usePlan();
   const upgrade = useUpgrade();
   const l = t.length;
-  // Courses need room; everything else reads best short
-  const recommended = /formation|cours|course|training/i.test(draft.idea) ? "medium" : "short";
+  const recommended = getAnalysis(draft, lang).recommendedLength;
 
   return (
     <FlowPage

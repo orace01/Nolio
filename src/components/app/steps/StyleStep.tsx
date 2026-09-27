@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { canUse } from "@/lib/app/account";
 import { MARGINS, resolveLook, STYLES, findById } from "@/lib/app/catalog";
@@ -27,10 +29,14 @@ export function StyleStep() {
   const ownAllowed = canUse("pro", plan);
   const current = findById(STYLES, draft.style);
 
+  const router = useRouter();
+  const studio = `/${lang}/app/new/style/studio`;
+
+  // "Create my style" opens the design studio, where Gemini designs it with the user
   const openOwn = () =>
     ownAllowed
-      ? updateDraft({ ownStyle: true })
-      : upgrade({ name: s.ownAction, kind: "option", tier: "pro", onUnlock: () => updateDraft({ ownStyle: true }) });
+      ? router.push(studio)
+      : upgrade({ name: s.ownAction, kind: "option", tier: "pro", onUnlock: () => router.push(studio) });
 
   return (
     <FlowPage
@@ -94,13 +100,18 @@ export function StyleStep() {
             options={MARGINS.map((margin) => ({ id: margin.id, label: margin.name[lang] }))}
             onChange={(margins) => updateDraft({ margins })}
           />
-          <button
-            type="button"
-            className={`${button.text} ${button.quiet}`}
-            onClick={() => updateDraft({ ownStyle: false })}
-          >
-            {s.ownLeave}
-          </button>
+          <div className={styles.ownActions}>
+            <Link href={studio} className={button.text}>
+              {s.ownEdit}
+            </Link>
+            <button
+              type="button"
+              className={`${button.text} ${button.quiet}`}
+              onClick={() => updateDraft({ ownStyle: false })}
+            >
+              {s.ownLeave}
+            </button>
+          </div>
         </div>
       ) : (
         <button type="button" className={styles.own} onClick={openOwn}>

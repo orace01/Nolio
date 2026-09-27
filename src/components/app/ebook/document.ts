@@ -22,14 +22,27 @@ export type EbookDocument = {
   credit: boolean;
 };
 
-export function useEbookDocument(draft: Draft): EbookDocument {
+/* What the print page receives from the server instead of the local stores */
+export type DocumentOverrides = {
+  content?: EbookContent | null;
+  author?: string;
+  brand?: Brand;
+  credit?: boolean;
+};
+
+export function useEbookDocument(draft: Draft, overrides: DocumentOverrides = {}): EbookDocument {
   const lang = useLang();
-  const brand = useBrand();
+  const localBrand = useBrand();
   const profile = useProfile();
   const plan = usePlan();
+  const brand = overrides.brand ?? localBrand;
+  const author = overrides.author ?? `${profile.firstName} ${profile.lastName}`.trim();
+  const credit = overrides.credit ?? plan === "free";
+  const written = overrides.content;
 
   return useMemo(() => {
-    const content = buildEbook(draft, lang, brand);
+    // The text written by the AI once the ebook exists, else the preview built from the dossier
+    const content = written ?? buildEbook(draft, lang, brand);
     return {
       lang,
       draft,
@@ -38,11 +51,11 @@ export function useEbookDocument(draft: Draft): EbookDocument {
       style: draft.style,
       look: resolveLook(draft.theme, draft.customTheme),
       margins: draft.ownStyle ? draft.margins : "normal",
-      author: `${profile.firstName} ${profile.lastName}`.trim(),
+      author,
       brand,
-      credit: plan === "free",
+      credit,
     };
-  }, [draft, lang, brand, profile.firstName, profile.lastName, plan]);
+  }, [draft, lang, brand, author, credit, written]);
 }
 
 /* The theme as CSS custom properties, read by covers and pages */

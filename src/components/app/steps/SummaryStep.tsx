@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { formatList } from "@/i18n/format";
 import { findById, LENGTHS } from "@/lib/app/catalog";
-import { analyzeIdea, suggestAudiences } from "@/lib/app/content";
+import { getAnalysis } from "@/lib/app/content";
 import { useDraft } from "@/lib/app/store";
 import { FlowPage, NextAction } from "../ui/FlowPage";
 import { useAppText } from "../useAppText";
@@ -15,8 +15,8 @@ export function SummaryStep() {
   const { lang, t } = useAppText();
   const draft = useDraft();
   const s = t.summary;
-  const analysis = useMemo(() => analyzeIdea(draft.idea, lang), [draft.idea, lang]);
-  const suggestions = useMemo(() => suggestAudiences(draft.idea, lang), [draft.idea, lang]);
+  const analysis = useMemo(() => getAnalysis(draft, lang), [draft, lang]);
+  const suggestions = analysis.audiences;
 
   const audiences = [
     ...suggestions.filter((suggestion) => draft.audiences.includes(suggestion.id)).map((item) => item.name),

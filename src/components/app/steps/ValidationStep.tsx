@@ -1,13 +1,25 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api, ApiError, getRuntime } from "@/lib/app/api";
 import { findById, ILLUSTRATIONS, STYLES, THEMES, TONES } from "@/lib/app/catalog";
-import { createEbook, resetDraft, useDraft, type Draft } from "@/lib/app/store";
+import { outlineKey, type Outline } from "@/lib/app/model";
+import {
+  createEbook,
+  resetDraft,
+  updateDraft,
+  useBrand,
+  useDraft,
+  useHydrated,
+  useProfile,
+  type Draft,
+} from "@/lib/app/store";
 import { Cover } from "../ebook/Cover";
 import { useEbookDocument } from "../ebook/document";
 import { EbookPage } from "../ebook/EbookPage";
 import button from "../ui/Button.module.css";
+import field from "../ui/Field.module.css";
 import { FlowPage } from "../ui/FlowPage";
 import ui from "../ui/ui.module.css";
 import { useAppText } from "../useAppText";
@@ -23,6 +35,37 @@ export function ValidationStep() {
   const doc = useEbookDocument(draft);
   const v = t.validation;
   const { content, pagination } = doc;
+  const hydrated = useHydrated();
+  const profile = useProfile();
+  const brand = useBrand();
+  const [error, setError] = useState("");
+  const [outlineFailed, setOutlineFailed] = useState(false);
+
+  // Gemini plans the outline from the latest answers; it is kept until they change
+  const key = outlineKey(draft, lang);
+  const planning =
+    hydrated && !sent && getRuntime().ai.gemini && !outlineFailed && (!draft.outline || draft.outlineKey !== key);
+
+  useEffect(() => {
+    if (!planning) return;
+    let cancelled = false;
+    api<{ outline: Outline; key: string }>("/api/ai/outline", {
+      body: {
+        draft,
+        lang,
+        author: { name: `${profile.firstName} ${profile.lastName}`.trim(), role: null },
+        brand: { bio: brand.bio, cta: brand.cta, link: brand.link },
+      },
+    })
+      .then(({ outline, key: builtFor }) => !cancelled && updateDraft({ outline, outlineKey: builtFor }))
+      // The preview stays on the stand-in; the worker plans the outline again anyway
+      .catch(() => !cancelled && setOutlineFailed(true));
+    return () => {
+      cancelled = true;
+    };
+    // The request depends on the answers only through their key
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planning, key]);
 
   // The preview shows how a chapter opens: number, title, illustration
   const opener = pagination.pages.findIndex((page) => page.kind === "opener");
@@ -40,11 +83,19 @@ export function ValidationStep() {
     { key: v.choices.illustrations, value: findById(ILLUSTRATIONS, draft.illustrations).name[lang] },
   ];
 
-  const submit = () => {
+  const submit = async () => {
     setSent(draft);
-    const id = createEbook(draft);
-    resetDraft();
-    router.push(`/${lang}/app/ebooks/${id}/creating`);
+    setError("");
+    try {
+      const id = await createEbook(draft, lang);
+      // The server already turned its copy of the draft into the ebook
+      resetDraft({ keepOnServer: true });
+      router.push(`/${lang}/app/ebooks/${id}/creating`);
+    } catch (issue) {
+      setSent(null);
+      const code = issue instanceof ApiError ? issue.code : "";
+      setError(code === "quota_reached" ? v.quota : code === "plan_required" ? v.planRequired : v.failed);
+    }
   };
 
   return (
@@ -55,7 +106,7 @@ export function ValidationStep() {
       lead={v.lead}
       back={{ href: `/${lang}/app/new/images`, label: t.common.back }}
       primary={
-        <button type="button" className={button.primary} onClick={submit} disabled={sent !== null}>
+        <button type="button" className={button.primary} onClick={submit} disabled={sent !== null || planning}>
           {v.submit}
         </button>
       }
@@ -65,26 +116,38 @@ export function ValidationStep() {
           <p id="validation-outline" className={ui.label}>
             {v.outline(pagination.pages.length)}
           </p>
-          <ol className={styles.outline}>
-            {content.chapters.map((chapter, index) => (
-              <li key={index}>
-                <span className={styles.outlineNumber}>{String(index + 1).padStart(2, "0")}</span>
-                <span>{chapter.title}</span>
+          {planning ? (
+            <div className={styles.analyzing} role="status" style={{ marginTop: 16 }}>
+              <p className={ui.small}>{v.planning}</p>
+              <span className={styles.sweep} />
+            </div>
+          ) : (
+            <ol className={styles.outline}>
+              {content.chapters.map((chapter, index) => (
+                <li key={index}>
+                  <span className={styles.outlineNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <span>{chapter.title}</span>
+                  <span className={styles.outlineMeta}>
+                    {chapter.video && <span className={styles.miniVideo} role="img" aria-label={v.video} />}
+                    {v.page(pagination.chapterStarts[index])}
+                  </span>
+                </li>
+              ))}
+              <li>
+                <span className={styles.outlineNumber}>{String(content.chapters.length + 1).padStart(2, "0")}</span>
+                <span>{content.cta?.label ?? v.about}</span>
                 <span className={styles.outlineMeta}>
-                  {chapter.video && <span className={styles.miniVideo} role="img" aria-label={v.video} />}
-                  {v.page(pagination.chapterStarts[index])}
+                  {content.cta && <span className={styles.outlineLink}>{v.link}</span>}
+                  {v.page(pagination.pages.length)}
                 </span>
               </li>
-            ))}
-            <li>
-              <span className={styles.outlineNumber}>{String(content.chapters.length + 1).padStart(2, "0")}</span>
-              <span>{content.cta?.label ?? v.about}</span>
-              <span className={styles.outlineMeta}>
-                {content.cta && <span className={styles.outlineLink}>{v.link}</span>}
-                {v.page(pagination.pages.length)}
-              </span>
-            </li>
-          </ol>
+            </ol>
+          )}
+          {error && (
+            <p className={field.error} role="alert" style={{ marginTop: 14 }}>
+              {error}
+            </p>
+          )}
         </section>
 
         <section aria-labelledby="validation-look">

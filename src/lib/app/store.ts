@@ -2,99 +2,21 @@
 
 import { useSyncExternalStore } from "react";
 import { DEMO_ACCOUNT, type Plan, type RoleId } from "./account";
-import {
-  DEFAULT_CUSTOM_THEME,
-  type CustomTheme,
-  type IllustrationId,
-  type LengthId,
-  type Margins,
-  type StyleId,
-  type ThemeChoice,
-  type ToneId,
-} from "./catalog";
+import { api, debounce, getRuntime } from "./api";
+import { DEFAULT_DRAFT, reviveDraft, type Draft, type Ebook, type EbookComment } from "./model";
 
 /*
- * Front-end only persistence: the ebook in progress, the created ebooks, the
- * plan, the profile and the brand kit live in localStorage until the back end
- * exists. Components read them through useSyncExternalStore, so the server
- * render uses the defaults and the browser switches to the stored values
- * without a hydration mismatch.
- * TODO: replace with the API once accounts are connected.
+ * The app's state: the ebook in progress, the created ebooks, the plan, the
+ * profile and the brand kit. Components read it through useSyncExternalStore,
+ * so the server render uses the defaults and the browser switches to the
+ * stored values without a hydration mismatch.
+ * With accounts (remote runtime), localStorage is only a cache: the state
+ * comes from the server and every change is sent back to it. Without them
+ * (demo), localStorage is the whole storage.
  */
 
-export type MediaItem = {
-  id: string;
-  kind: "video" | "link" | "file";
-  title: string;
-  url: string;
-};
-
-export type Draft = {
-  idea: string;
-  /* The idea as it was last analyzed, so the analysis only replays after a change */
-  analyzed: string;
-  audiences: string[];
-  audienceOther: string;
-  media: MediaItem[];
-  length: LengthId;
-  style: StyleId;
-  /* "Create my style" (Pro): the chosen layout with the user's margins */
-  ownStyle: boolean;
-  margins: Margins;
-  theme: ThemeChoice;
-  customTheme: CustomTheme;
-  tone: ToneId;
-  address: "formal" | "informal";
-  illustrations: IllustrationId;
-  illustrationBrief: string;
-  /* Imported photos, downscaled to data URLs */
-  images: string[];
-  aiPrompt: string;
-  aiImages: number;
-  /* The last creation step visited, where "Resume" leads */
-  lastStep: string;
-};
-
-export const DEFAULT_DRAFT: Draft = {
-  idea: "",
-  analyzed: "",
-  audiences: [],
-  audienceOther: "",
-  media: [],
-  length: "short",
-  style: "monograph",
-  ownStyle: false,
-  margins: "normal",
-  theme: "forest",
-  customTheme: DEFAULT_CUSTOM_THEME,
-  tone: "direct",
-  address: "formal",
-  illustrations: "icons",
-  illustrationBrief: "",
-  images: [],
-  aiPrompt: "",
-  aiImages: 0,
-  lastStep: "",
-};
-
-export type EbookComment = {
-  id: string;
-  page: number;
-  /* The passage clicked on the page, or null for the whole page */
-  part: string | null;
-  text: string;
-  /* Set when the fixes are requested; the fix counts as done once it is past */
-  appliedAt: number | null;
-};
-
-export type Ebook = {
-  id: string;
-  createdAt: number;
-  /* Creation is simulated: the ebook counts as ready from this moment */
-  readyAt: number;
-  draft: Draft;
-  comments: EbookComment[];
-};
+export type { ChatMessage, Draft, Ebook, EbookComment, MediaItem } from "./model";
+export { DEFAULT_DRAFT } from "./model";
 
 export type Profile = {
   firstName: string;
@@ -179,12 +101,10 @@ const merge =
   (raw: unknown): T =>
     raw && typeof raw === "object" ? { ...fallback, ...(raw as Partial<T>) } : fallback;
 
-const draftStore = createStore("nolio.draft", DEFAULT_DRAFT, merge(DEFAULT_DRAFT));
+const draftStore = createStore("nolio.draft", DEFAULT_DRAFT, reviveDraft);
 
 const ebookStore = createStore<Ebook[]>("nolio.ebooks", [], (raw) =>
-  Array.isArray(raw)
-    ? raw.map((ebook: Ebook) => ({ ...ebook, draft: { ...DEFAULT_DRAFT, ...ebook.draft } }))
-    : [],
+  Array.isArray(raw) ? raw.map((ebook: Ebook) => ({ ...ebook, draft: reviveDraft(ebook.draft) })) : [],
 );
 
 const planStore = createStore<Plan>("nolio.plan", DEMO_ACCOUNT.plan, (raw) =>
@@ -214,14 +134,32 @@ export function newId() {
 
 export const useDraft = draftStore.use;
 
+let draftLang = "fr";
+
+export function setDraftLang(lang: string) {
+  draftLang = lang;
+}
+
+/* Every answer reaches the server, so the AI steps work from the latest dossier */
+function syncDraft() {
+  if (!getRuntime().remote) return;
+  debounce("draft", () => {
+    void api("/api/draft", { method: "PUT", body: { draft: draftStore.read(), lang: draftLang } }).catch(() => {
+      // Kept locally; the next change sends it again
+    });
+  });
+}
+
 /* A patch, or a function of the latest draft for changes that finish later */
 export function updateDraft(change: Partial<Draft> | ((draft: Draft) => Partial<Draft>)) {
   const current = draftStore.read();
   draftStore.write({ ...current, ...(typeof change === "function" ? change(current) : change) });
+  syncDraft();
 }
 
-export function resetDraft() {
+export function resetDraft(options: { keepOnServer?: boolean } = {}) {
   draftStore.write(DEFAULT_DRAFT);
+  if (getRuntime().remote && !options.keepOnServer) void api("/api/draft", { method: "DELETE" }).catch(() => {});
 }
 
 /* Created ebooks */
@@ -232,7 +170,21 @@ export function useEbook(id: string) {
   return useEbooks().find((ebook) => ebook.id === id);
 }
 
-export function createEbook(draft: Draft): string {
+export function readEbooks() {
+  return ebookStore.read();
+}
+
+export function replaceEbooks(ebooks: Ebook[]) {
+  ebookStore.write(ebooks);
+}
+
+/* "Approve and create": a job for the worker, or the simulated creation of the demo */
+export async function createEbook(draft: Draft, lang: string): Promise<string> {
+  if (getRuntime().remote) {
+    const { ebook } = await api<{ ebook: Ebook }>("/api/ebooks", { body: { draft, lang } });
+    ebookStore.write([ebook, ...ebookStore.read()]);
+    return ebook.id;
+  }
   const now = Date.now();
   const ebook: Ebook = {
     id: newId(),
@@ -240,6 +192,7 @@ export function createEbook(draft: Draft): string {
     readyAt: now + CREATION_MS,
     draft,
     comments: [],
+    lang,
   };
   ebookStore.write([ebook, ...ebookStore.read()]);
   return ebook.id;
@@ -251,8 +204,54 @@ export function updateEbook(id: string, change: (ebook: Ebook) => Partial<Ebook>
   );
 }
 
+export async function refreshEbook(id: string) {
+  const { ebook } = await api<{ ebook: Ebook }>(`/api/ebooks/${id}`);
+  updateEbook(id, () => ebook);
+}
+
 export function deleteEbook(id: string) {
   ebookStore.write(ebookStore.read().filter((ebook) => ebook.id !== id));
+  if (getRuntime().remote) void api(`/api/ebooks/${id}`, { method: "DELETE" }).catch(() => {});
+}
+
+export async function retryEbook(id: string) {
+  await api(`/api/ebooks/${id}/retry`, { method: "POST" });
+  updateEbook(id, () => ({ status: "queued", error: null, progress: { step: 0, ratio: 0 } }));
+}
+
+/* Comments on a finished ebook */
+
+export async function addComment(id: string, comment: Omit<EbookComment, "id" | "appliedAt">) {
+  if (getRuntime().remote) {
+    const { comment: saved } = await api<{ comment: EbookComment }>(`/api/ebooks/${id}/comments`, {
+      body: { page: comment.page, part: comment.part, text: comment.text },
+    });
+    updateEbook(id, (current) => ({ comments: [...current.comments, saved] }));
+    return;
+  }
+  const local: EbookComment = { ...comment, id: newId(), appliedAt: null };
+  updateEbook(id, (current) => ({ comments: [...current.comments, local] }));
+}
+
+export function removeComment(id: string, commentId: string) {
+  updateEbook(id, (current) => ({ comments: current.comments.filter((comment) => comment.id !== commentId) }));
+  if (getRuntime().remote) void api(`/api/ebooks/${id}/comments/${commentId}`, { method: "DELETE" }).catch(() => {});
+}
+
+export async function applyFixes(id: string) {
+  if (getRuntime().remote) {
+    await api(`/api/ebooks/${id}/fixes`, { method: "POST" });
+    updateEbook(id, (current) => ({
+      comments: current.comments.map((comment) =>
+        comment.status === "pending" ? { ...comment, status: "applying" } : comment,
+      ),
+    }));
+    return;
+  }
+  const at = Date.now() + FIXES_MS;
+  updateEbook(id, (current) => ({
+    comments: current.comments.map((comment) => (comment.appliedAt === null ? { ...comment, appliedAt: at } : comment)),
+  }));
 }
 
 /* Plan, profile and brand kit */
@@ -260,18 +259,54 @@ export function deleteEbook(id: string) {
 export const usePlan = planStore.use;
 
 // TODO: go through checkout once payments are connected
-export const setPlan = planStore.write;
+export function setPlan(plan: Plan) {
+  planStore.write(plan);
+  if (getRuntime().remote) void api("/api/me", { method: "PATCH", body: { plan } }).catch(() => {});
+}
 
 export const useProfile = profileStore.use;
 
 export function updateProfile(patch: Partial<Profile>) {
   profileStore.write({ ...profileStore.read(), ...patch });
+  if (!getRuntime().remote) return;
+  debounce("profile", () => {
+    const { firstName, lastName, role, roleOther } = profileStore.read();
+    void api("/api/me", { method: "PATCH", body: { profile: { firstName, lastName, role, roleOther } } }).catch(() => {});
+  });
 }
 
 export const useBrand = brandStore.use;
 
 export function updateBrand(patch: Partial<Brand>) {
   brandStore.write({ ...brandStore.read(), ...patch });
+  if (!getRuntime().remote) return;
+  debounce("brand", () => void api("/api/me", { method: "PATCH", body: { brand: brandStore.read() } }).catch(() => {}));
+}
+
+/* The state saved on the server replaces the local cache when the app opens */
+export async function loadRemoteState() {
+  const state = await api<{
+    profile: Profile;
+    plan: Plan;
+    brand: Brand;
+    draft: unknown;
+    ebooks: Ebook[];
+  }>("/api/state");
+  profileStore.write({ ...DEFAULT_PROFILE, ...state.profile });
+  planStore.write(state.plan);
+  brandStore.write({ ...DEFAULT_BRAND, ...state.brand });
+  draftStore.write(state.draft ? reviveDraft(state.draft) : DEFAULT_DRAFT);
+  ebookStore.write(state.ebooks.map((ebook) => ({ ...ebook, draft: reviveDraft(ebook.draft) })));
+}
+
+/* Something is running on the server and the screen should follow it */
+export function hasWorkInProgress(ebooks: Ebook[]) {
+  return ebooks.some(
+    (ebook) =>
+      ebook.status === "queued" ||
+      ebook.status === "working" ||
+      ebook.comments.some((comment) => comment.status === "applying"),
+  );
 }
 
 /* True once the browser has taken over from the server render */

@@ -7,6 +7,7 @@ import page from "@/components/pages/page.module.css";
 import { SplitPage } from "@/components/site/SplitPage";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { configured } from "@/server/env";
 
 export async function generateMetadata({
   params,
@@ -32,6 +33,10 @@ export default async function ForgotPasswordPage({
       <p className={page.lead}>{t.lead}</p>
 
       <AuthForm
+        mode="forgot"
+        lang={lang}
+        remote={configured.supabase}
+        messages={dict.account.messages}
         submit={t.submit}
         notice={dict.account.notice}
         fields={[

@@ -80,7 +80,7 @@ export function DashboardTopBar() {
 const PHASES: [RegExp, number][] = [
   [/\/new\/(idea|analysis)$/, 1],
   [/\/new\/(audience|media|length|summary)$/, 2],
-  [/\/new\/(style|colors|writing|illustrations|images)$/, 3],
+  [/\/new\/(style|style\/studio|colors|writing|illustrations|images)$/, 3],
   [/\/(new\/validation|ebooks\/[^/]+\/creating)$/, 4],
   [/\/ebooks\/[^/]+(\/download)?$/, 5],
 ];
@@ -127,7 +127,7 @@ export function CreationTopBar() {
 /* Remembers the last creation step visited, where "Resume" leads */
 export function DraftStepTracker() {
   const pathname = usePathname();
-  const step = pathname.match(/\/app\/new\/([a-z]+)$/)?.[1];
+  const step = pathname.match(/\/app\/new\/([a-z]+(?:\/studio)?)$/)?.[1];
 
   useEffect(() => {
     if (step) updateDraft({ lastStep: step });

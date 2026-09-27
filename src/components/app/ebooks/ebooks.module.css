@@ -229,6 +229,15 @@
   color: var(--green-deep);
 }
 
+.commentReply {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--grey-green);
+}
+
 .commentForm {
   display: flex;
   flex-direction: column;
@@ -349,6 +358,15 @@
   box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
+}
+
+/* For the worker: the pages only, one below the other, no margins */
+.printRender {
+  gap: 0;
+}
+
+.printRender .printSheet {
+  box-shadow: none;
 }
 
 @media print {

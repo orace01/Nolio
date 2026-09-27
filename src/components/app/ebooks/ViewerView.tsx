@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent, type MouseEvent } from "react";
-import { FIXES_MS, newId, updateEbook, type Ebook, type EbookComment } from "@/lib/app/store";
+import type { CommentStatus } from "@/lib/app/model";
+import { addComment, applyFixes, removeComment, type Ebook, type EbookComment } from "@/lib/app/store";
 import { useEbookDocument } from "../ebook/document";
 import { EbookPage } from "../ebook/EbookPage";
 import button from "../ui/Button.module.css";
@@ -43,7 +44,8 @@ export function ViewerView() {
 
   // Still being created: follow the progress instead
   useEffect(() => {
-    if (hydrated && ebook && Date.now() < ebook.readyAt) {
+    const creating = ebook?.status ? ebook.status !== "ready" : ebook && Date.now() < ebook.readyAt;
+    if (hydrated && ebook && creating) {
       router.replace(`/${lang}/app/ebooks/${id}/creating`);
     }
   }, [hydrated, ebook, id, lang, router]);
@@ -57,7 +59,8 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
   const { lang, t } = useAppText();
   const id = ebook.id;
   const v = t.viewer;
-  const doc = useEbookDocument(ebook.draft);
+  // The text written by the AI, once the server has it
+  const doc = useEbookDocument(ebook.draft, { content: ebook.content });
   const pages = doc.pagination.pages;
   const spreads = spreadsOf(pages.length);
 
@@ -91,29 +94,35 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
   };
 
   const comments = ebook.comments;
-  const statusOf = (comment: EbookComment) =>
-    comment.appliedAt === null ? "pending" : now < comment.appliedAt ? "applying" : "applied";
-  const pending = comments.filter((comment) => comment.appliedAt === null).length;
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  // Server comments carry their status; the demo derives it from time
+  const statusOf = (comment: EbookComment): CommentStatus =>
+    comment.status ?? (comment.appliedAt === null ? "pending" : now < comment.appliedAt ? "applying" : "applied");
+  const pending = comments.filter((comment) => statusOf(comment) === "pending").length;
   const applying = comments.some((comment) => statusOf(comment) === "applying");
 
-  const add = (event: FormEvent) => {
+  const add = async (event: FormEvent) => {
     event.preventDefault();
     const value = text.trim();
-    if (!value) return;
-    const comment: EbookComment = { id: newId(), page: target.page, part: target.part, text: value, appliedAt: null };
-    updateEbook(id, (current) => ({ comments: [...current.comments, comment] }));
-    setText("");
+    if (!value || sending) return;
+    setSending(true);
+    setFailed(false);
+    try {
+      await addComment(id, { page: target.page, part: target.part, text: value });
+      setText("");
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+    }
   };
 
-  const remove = (commentId: string) =>
-    updateEbook(id, (current) => ({ comments: current.comments.filter((comment) => comment.id !== commentId) }));
+  const remove = (commentId: string) => removeComment(id, commentId);
 
-  // TODO: send the comments to the AI and rebuild the pages
   const apply = () => {
-    const at = Date.now() + FIXES_MS;
-    updateEbook(id, (current) => ({
-      comments: current.comments.map((comment) => (comment.appliedAt === null ? { ...comment, appliedAt: at } : comment)),
-    }));
+    setFailed(false);
+    applyFixes(id).catch(() => setFailed(true));
   };
 
   const shown = [left, right].filter((index): index is number => index !== null);
@@ -206,6 +215,7 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
                 <span>{v.status[status]}</span>
               </p>
               <p className={styles.commentText}>{comment.text}</p>
+              {comment.reply && status !== "pending" && <p className={styles.commentReply}>{comment.reply}</p>}
               {status === "pending" && (
                 <button
                   type="button"
@@ -220,7 +230,7 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
           );
         })}
 
-        <form className={styles.commentForm} onSubmit={add}>
+        <form className={styles.commentForm} onSubmit={(event) => void add(event)}>
           <label htmlFor="comment" className={ui.srOnly}>
             {v.commentLabel}
           </label>
@@ -232,7 +242,7 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
             onChange={(event) => setText(event.target.value)}
           />
           <div className={styles.formRow}>
-            <button type="submit" className={`${button.secondary} ${button.small}`} disabled={!text.trim()}>
+            <button type="submit" className={`${button.secondary} ${button.small}`} disabled={!text.trim() || sending}>
               {v.add}
             </button>
             {target.part && (
@@ -248,6 +258,11 @@ function Viewer({ ebook, now }: { ebook: Ebook; now: number }) {
         </form>
 
         <div className={styles.final}>
+          {failed && (
+            <p className={field.error} role="alert">
+              {v.failed}
+            </p>
+          )}
           <button type="button" className={button.secondary} disabled={pending === 0 || applying} onClick={apply}>
             {applying ? v.applying : v.apply(pending)}
           </button>

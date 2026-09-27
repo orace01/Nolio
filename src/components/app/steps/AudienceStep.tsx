@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { suggestAudiences } from "@/lib/app/content";
+import { getAnalysis } from "@/lib/app/content";
 import { updateDraft, useDraft } from "@/lib/app/store";
 import field from "../ui/Field.module.css";
 import { FlowPage, NextAction } from "../ui/FlowPage";
@@ -15,7 +15,7 @@ export function AudienceStep() {
   const { lang, t } = useAppText();
   const draft = useDraft();
   const a = t.audience;
-  const suggestions = useMemo(() => suggestAudiences(draft.idea, lang), [draft.idea, lang]);
+  const suggestions = useMemo(() => getAnalysis(draft, lang).audiences, [draft, lang]);
   const spotted = suggestions.some((suggestion) => suggestion.fromIdea);
 
   const toggle = (id: string) =>

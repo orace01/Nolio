@@ -1,27 +1,19 @@
 /*
- * Stand-ins for the AI back end: the analysis of an idea and the content of
- * the finished ebook. The "focus method" example produces a complete sample;
- * any other idea gets a placeholder structure with the real layout.
- * TODO: replace with the generation service.
+ * Stand-ins for the AI, used in demo mode or when a provider fails: the
+ * analysis of an idea and the content of the ebook, in the same shapes as
+ * the AI answers (see model.ts). The "focus method" example produces a
+ * complete sample; any other idea gets a placeholder with the real layout.
+ * Once the AI has answered, its analysis, outline and content win.
  */
 
 import type { Locale } from "@/i18n/config";
-import type { Brand, Draft, MediaItem } from "./store";
+import { outlineKey, type Analysis, type AudienceSuggestion, type Chapter, type Draft, type EbookContent } from "./model";
+
+type BrandCta = { cta: string; link: string };
 
 type Text = Record<Locale, string>;
 
 /* ---------- Analysis of the idea ---------- */
-
-export type Analysis = {
-  type: string;
-  /* Short name of the type, for the library ("Guide · 12 pages") */
-  kind: string;
-  subject: string;
-  contents: string;
-  goal: string;
-  /* One sentence for the summary screen */
-  summary: string;
-};
 
 /* The example offered on the idea screen, which leads to the full sample */
 export const SAMPLE_IDEA: Text = {
@@ -33,7 +25,9 @@ export function isSampleIdea(idea: string) {
   return /rituel|ritual/i.test(idea) && /temps|time/i.test(idea);
 }
 
-const SAMPLE_ANALYSIS: Record<Locale, Analysis> = {
+type BaseAnalysis = Pick<Analysis, "type" | "kind" | "subject" | "contents" | "goal" | "summary">;
+
+const SAMPLE_ANALYSIS: Record<Locale, BaseAnalysis> = {
   fr: {
     type: "Un guide pratique en PDF",
     kind: "Guide",
@@ -93,7 +87,7 @@ function firstSentence(idea: string) {
   return sentence.length > 90 ? `${sentence.slice(0, 88).trim()}…` : sentence;
 }
 
-export function analyzeIdea(idea: string, lang: Locale): Analysis {
+function baseAnalysis(idea: string, lang: Locale): BaseAnalysis {
   if (isSampleIdea(idea)) return SAMPLE_ANALYSIS[lang];
 
   const text = idea.toLowerCase();
@@ -116,6 +110,32 @@ export function analyzeIdea(idea: string, lang: Locale): Analysis {
     goal: goal.goal[lang],
     summary: subject.endsWith("…") || subject.endsWith(".") ? subject : `${subject}.`,
   };
+}
+
+const OPEN: Record<Locale, string[]> = {
+  fr: ["Le public exact", "Les liens de vos vidéos", "La longueur de l’ebook"],
+  en: ["The exact audience", "The links to your videos", "The length of the ebook"],
+};
+
+/* The stand-in analysis, in the shape the AI returns */
+export function analyzeIdea(idea: string, lang: Locale): Analysis {
+  const base = baseAnalysis(idea, lang);
+  const sample = isSampleIdea(idea);
+  return {
+    ...base,
+    refused: false,
+    refusalReason: "",
+    title: sample ? SAMPLE[lang].title : titleFromIdea(idea, PLACEHOLDER[lang].untitled),
+    subtitle: sample ? SAMPLE[lang].subtitle : PLACEHOLDER[lang].subtitle,
+    open: OPEN[lang],
+    audiences: suggestAudiences(idea, lang),
+    recommendedLength: /formation|cours|course|training/i.test(idea) ? "medium" : "short",
+  };
+}
+
+/* The AI's analysis when there is one for the current idea, else the stand-in */
+export function getAnalysis(draft: Draft, lang: Locale): Analysis {
+  return draft.analysis && draft.analyzed === draft.idea.trim() ? draft.analysis : analyzeIdea(draft.idea, lang);
 }
 
 /* ---------- Audiences suggested from the idea ---------- */
@@ -272,9 +292,7 @@ const GENERAL_AUDIENCES: AudienceEntry[] = [
   ),
 ];
 
-export type AudienceSuggestion = { id: string; name: string; description: string; fromIdea: boolean };
-
-export function suggestAudiences(idea: string, lang: Locale): AudienceSuggestion[] {
+function suggestAudiences(idea: string, lang: Locale): AudienceSuggestion[] {
   const text = idea.toLowerCase();
   const family = AUDIENCE_FAMILIES.find((entry) => entry.match.test(text));
   const list = family?.audiences ?? GENERAL_AUDIENCES;
@@ -316,27 +334,7 @@ export function hostname(url: string) {
 
 /* ---------- Content of the finished ebook ---------- */
 
-export type Chapter = {
-  title: string;
-  /* Running head of the chapter's pages */
-  short: string;
-  intro: string;
-  paragraphs: string[];
-  checklist?: string[];
-  box?: { title: string; text: string };
-  video?: MediaItem;
-};
-
-export type EbookContent = {
-  title: string;
-  subtitle: string;
-  kind: string;
-  sample: boolean;
-  chapters: Chapter[];
-  cta: { label: string; url: string } | null;
-  /* Links and files listed on the last page, besides the call to action */
-  resources: MediaItem[];
-};
+export type { Chapter, EbookContent };
 
 type SampleChapter = Omit<Chapter, "video">;
 
@@ -518,7 +516,7 @@ function titleFromIdea(idea: string, fallback: string) {
   return words ? words.charAt(0).toUpperCase() + words.slice(1) : fallback;
 }
 
-export function buildEbook(draft: Draft, lang: Locale, brand?: Brand): EbookContent {
+export function buildEbook(draft: Draft, lang: Locale, brand?: BrandCta): EbookContent {
   const videos = draft.media.filter((item) => item.kind === "video");
   const links = draft.media.filter((item) => item.kind === "link");
   const files = draft.media.filter((item) => item.kind === "file");
@@ -529,14 +527,36 @@ export function buildEbook(draft: Draft, lang: Locale, brand?: Brand): EbookCont
       ? { label: brand.cta, url: brand.link }
       : null;
   const resources = [...otherLinks, ...files];
-  const { kind } = analyzeIdea(draft.idea, lang);
+  const analysis = getAnalysis(draft, lang);
+  const text = PLACEHOLDER[lang];
+
+  // The outline written by the AI, while it matches the answers: real titles, intros and key points
+  if (draft.outline && draft.outlineKey === outlineKey(draft, lang)) {
+    const byId = new Map(videos.map((video) => [video.id, video]));
+    return {
+      title: draft.outline.title,
+      subtitle: draft.outline.subtitle,
+      kind: analysis.kind,
+      sample: false,
+      chapters: draft.outline.chapters.map((chapter) => ({
+        title: chapter.title,
+        short: chapter.short,
+        intro: chapter.intro,
+        paragraphs: [text.text],
+        checklist: chapter.points.slice(0, 3),
+        video: chapter.videoIds.map((id) => byId.get(id)).find(Boolean),
+      })),
+      cta,
+      resources,
+    };
+  }
 
   if (isSampleIdea(draft.idea)) {
     const sample = SAMPLE[lang];
     return {
       title: sample.title,
       subtitle: sample.subtitle,
-      kind,
+      kind: analysis.kind,
       sample: true,
       // One video per ritual, in the order they were added
       chapters: sample.chapters.map((chapter, index) => ({
@@ -548,11 +568,10 @@ export function buildEbook(draft: Draft, lang: Locale, brand?: Brand): EbookCont
     };
   }
 
-  const text = PLACEHOLDER[lang];
   return {
-    title: titleFromIdea(draft.idea, text.untitled),
-    subtitle: text.subtitle,
-    kind,
+    title: analysis.title,
+    subtitle: analysis.subtitle,
+    kind: analysis.kind,
     sample: false,
     chapters: Array.from({ length: PLACEHOLDER_PARTS[draft.length] }, (_, index) => ({
       title: `${text.part} ${index + 1}`,
@@ -587,7 +606,7 @@ export type Pagination = {
 
 function needsTwoPages(chapter: Chapter, roomy: boolean) {
   if (roomy || chapter.video) return true;
-  return Boolean(chapter.checklist) && chapter.paragraphs.length > 1;
+  return Boolean(chapter.checklist?.length) && chapter.paragraphs.length > 1;
 }
 
 export function paginate(content: EbookContent, draft: Draft): Pagination {

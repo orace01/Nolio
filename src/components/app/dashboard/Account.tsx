@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { formatPrice } from "@/i18n/format";
+import { getRuntime } from "@/lib/app/api";
+import { supabaseBrowser } from "@/lib/supabase/browser";
 import { PLAN_PRICES, PLANS, ROLES, type Plan, type RoleId } from "@/lib/app/account";
 import { setPlan, updateProfile, usePlan, useProfile } from "@/lib/app/store";
 import button from "../ui/Button.module.css";
@@ -36,6 +38,7 @@ function AccountTabs({ current }: { current: Tab }) {
 
 function Profile() {
   const { lang, t } = useAppText();
+  const router = useRouter();
   const profile = useProfile();
   const a = t.account;
   const fields = [
@@ -87,8 +90,17 @@ function Profile() {
       </div>
       <div className={styles.profileFooter}>
         <p className={ui.hint}>{a.saved}</p>
-        {/* TODO: end the session once accounts are connected */}
-        <Link href={`/${lang}`} className={button.text}>
+        <Link
+          href={`/${lang}`}
+          className={button.text}
+          onClick={async (event) => {
+            if (!getRuntime().remote) return;
+            event.preventDefault();
+            await supabaseBrowser().auth.signOut();
+            router.push(`/${lang}`);
+            router.refresh();
+          }}
+        >
           {a.logout}
         </Link>
       </div>

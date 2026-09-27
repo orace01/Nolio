@@ -294,8 +294,16 @@ export function findById<T extends { id: string }>(items: readonly T[], id: stri
   return items.find((item) => item.id === id) ?? items[0];
 }
 
-/* "Your colors" (Pro): an accent and two fonts picked by the user */
-export type CustomTheme = { accent: string; titleFont: FontKey; bodyFont: FontKey };
+/* "Your colors" (Pro): an accent and two fonts picked by the user, and the
+   tints and case the design studio may add */
+export type CustomTheme = {
+  accent: string;
+  titleFont: FontKey;
+  bodyFont: FontKey;
+  soft?: string;
+  paper?: string;
+  titleUppercase?: boolean;
+};
 
 export const DEFAULT_CUSTOM_THEME: CustomTheme = {
   accent: "#2a3f34",
@@ -330,11 +338,11 @@ export function resolveLook(choice: ThemeChoice, custom: CustomTheme): Look {
   if (choice === "custom") {
     return {
       accent: custom.accent,
-      soft: tint(custom.accent, 0.78),
-      paper: "#f4f3ef",
+      soft: custom.soft ?? tint(custom.accent, 0.78),
+      paper: custom.paper ?? "#f4f3ef",
       titleFont: custom.titleFont,
       bodyFont: custom.bodyFont,
-      titleUppercase: custom.titleFont === "montserrat",
+      titleUppercase: custom.titleUppercase ?? custom.titleFont === "montserrat",
       textured: false,
     };
   }

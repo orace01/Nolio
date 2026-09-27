@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { canUse } from "@/lib/app/account";
 import type { Tier } from "@/lib/app/catalog";
+import { api, getRuntime } from "@/lib/app/api";
 import { usePlan, type Ebook } from "@/lib/app/store";
 import { Cover } from "../ebook/Cover";
 import { useEbookDocument } from "../ebook/document";
@@ -18,6 +19,9 @@ import styles from "./ebooks.module.css";
 import { useEbookRoute } from "./useEbookRoute";
 
 type FormatId = "pdf" | "print" | "epub" | "social";
+
+/* Where each format is stored on the server */
+const FILE_KEYS: Record<FormatId, string> = { pdf: "pdf", print: "print", epub: "epub", social: "cover" };
 
 const FORMATS: { id: FormatId; tier: Tier; icon: ReactNode }[] = [
   { id: "pdf", tier: "basic", icon: <path d="M6 3h8l4 4v14H6zM14 3v4h4M9 13h6M9 16h6" /> },
@@ -47,7 +51,24 @@ function Downloads({ ebook }: { ebook: Ebook }) {
   const plan = usePlan();
   const upgrade = useUpgrade();
   const [notice, setNotice] = useState("");
-  const doc = useEbookDocument(ebook.draft);
+  const doc = useEbookDocument(ebook.draft, { content: ebook.content });
+  const remote = getRuntime().remote;
+  const [links, setLinks] = useState<Record<string, string> | null>(null);
+
+  useEffect(() => {
+    if (!remote) return;
+    let cancelled = false;
+    api<{ links: Record<string, string> }>(`/api/ebooks/${ebook.id}/files`)
+      .then((result) => {
+        if (cancelled) return;
+        setLinks(result.links);
+        if (!Object.keys(result.links).length) setNotice(t.download.preparing);
+      })
+      .catch(() => !cancelled && setNotice(t.download.preparing));
+    return () => {
+      cancelled = true;
+    };
+  }, [remote, ebook.id, t]);
   const d = t.download;
   const { content, pagination } = doc;
 
@@ -105,6 +126,21 @@ function Downloads({ ebook }: { ebook: Ebook }) {
                   {d.unlock}
                 </button>
               );
+            } else if (remote) {
+              // The files made by the worker, through short-lived links
+              const href = links?.[FILE_KEYS[format.id]];
+              action = href ? (
+                <a
+                  href={href}
+                  className={`${format.id === "pdf" ? button.primary : button.secondary} ${button.small}`}
+                >
+                  {d.get}
+                </a>
+              ) : (
+                <button type="button" className={`${button.secondary} ${button.small}`} disabled>
+                  {d.get}
+                </button>
+              );
             } else if (format.id === "pdf" || format.id === "print") {
               action = (
                 <a
@@ -117,7 +153,7 @@ function Downloads({ ebook }: { ebook: Ebook }) {
                 </a>
               );
             } else {
-              // TODO: generate these files on the server
+              // The demo has no server to make these files
               action = (
                 <button
                   type="button"

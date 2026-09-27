@@ -2,32 +2,63 @@
 
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
-import { analyzeIdea } from "@/lib/app/content";
-import { updateDraft, useDraft, useHydrated } from "@/lib/app/store";
+import { api, getRuntime } from "@/lib/app/api";
+import { analyzeIdea, getAnalysis } from "@/lib/app/content";
+import type { Analysis } from "@/lib/app/model";
+import { updateDraft, useDraft, useHydrated, useProfile } from "@/lib/app/store";
 import button from "../ui/Button.module.css";
 import { FlowPage, NextAction } from "../ui/FlowPage";
 import ui from "../ui/ui.module.css";
 import { useAppText } from "../useAppText";
 import styles from "./steps.module.css";
 
-/* How long the stand-in analysis pretends to think */
+/* How long the stand-in analysis of the demo pretends to think */
 const ANALYSIS_MS = 1600;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function AnalysisStep() {
   const { lang, t } = useAppText();
   const draft = useDraft();
+  const profile = useProfile();
   const hydrated = useHydrated();
   const a = t.analysis;
   const idea = draft.idea.trim();
-  const analysis = useMemo(() => analyzeIdea(idea, lang), [idea, lang]);
+  const analysis = useMemo(() => getAnalysis(draft, lang), [draft, lang]);
   // The analysis replays only when the idea changed since the last one
   const analyzing = hydrated && idea !== "" && draft.analyzed !== idea;
+  const role =
+    profile.role === "other" ? profile.roleOther || null : profile.role ? t.welcome.roles[profile.role].name : null;
 
   useEffect(() => {
     if (!analyzing) return;
-    const timer = setTimeout(() => updateDraft({ analyzed: idea }), ANALYSIS_MS);
-    return () => clearTimeout(timer);
-  }, [analyzing, idea]);
+    let cancelled = false;
+    const run = async () => {
+      let result: Analysis;
+      if (getRuntime().ai.gemini) {
+        // Gemini reads the idea; the stand-in takes over if it cannot answer
+        result = await api<Analysis>("/api/ai/analyze", { body: { idea, lang, role } }).catch(() =>
+          analyzeIdea(idea, lang),
+        );
+      } else {
+        await wait(ANALYSIS_MS);
+        result = analyzeIdea(idea, lang);
+      }
+      if (cancelled) return;
+      updateDraft((current) => ({
+        analyzed: idea,
+        analysis: result,
+        // Profiles suggested for a previous idea no longer apply
+        audiences: current.audiences.filter(
+          (id) => id === "other" || result.audiences.some((audience) => audience.id === id),
+        ),
+      }));
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
+  }, [analyzing, idea, lang, role]);
 
   const quote = idea.length > 170 ? `${idea.slice(0, 170).replace(/\s+\S*$/, "")}…` : idea;
   const found = [
@@ -58,6 +89,18 @@ export function AnalysisStep() {
         <span className={styles.sweep} />
       </div>
     );
+  } else if (analysis.refused) {
+    body = (
+      <div className={styles.open} role="alert">
+        <p className={ui.label}>{a.refused}</p>
+        <p className={ui.small}>{analysis.refusalReason}</p>
+        <p>
+          <Link href={`/${lang}/app/new/idea`} className={button.text}>
+            {a.emptyLink}
+          </Link>
+        </p>
+      </div>
+    );
   } else {
     body = (
       <>
@@ -77,7 +120,7 @@ export function AnalysisStep() {
         </ul>
         <div className={styles.open}>
           <p className={ui.label}>{a.open}</p>
-          <p className={ui.small}>{a.openText}</p>
+          <p className={ui.small}>{analysis.open.length ? `${analysis.open.join(", ")}.` : a.openText}</p>
         </div>
       </>
     );
@@ -93,7 +136,7 @@ export function AnalysisStep() {
         <NextAction
           href={`/${lang}/app/new/audience`}
           label={t.common.continue}
-          disabled={!hydrated || idea === "" || analyzing}
+          disabled={!hydrated || idea === "" || analyzing || analysis.refused}
         />
       }
     >

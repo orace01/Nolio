@@ -3,8 +3,12 @@ import { appTitle } from "@/i18n/app";
 
 export const generateMetadata = appTitle("print");
 
-/* ?for=print: the version for the printer, without clickable links */
+/*
+ * ?for=print: the version for the printer, without clickable links.
+ * ?token=…&render=1: opened by the worker to make the PDF files.
+ */
 export default async function Page({ searchParams }: PageProps<"/[lang]/app/print/[id]">) {
-  const { for: target } = await searchParams;
-  return <PrintView forPrint={target === "print"} />;
+  const query = await searchParams;
+  const token = typeof query.token === "string" ? query.token : null;
+  return <PrintView forPrint={query.for === "print"} token={token} render={query.render === "1"} />;
 }

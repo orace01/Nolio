@@ -16,6 +16,7 @@ import {
   type Draft,
   type Ebook,
 } from "@/lib/app/store";
+import { isEbookReady } from "@/lib/app/model";
 import { Cover } from "../ebook/Cover";
 import { useEbookDocument, type EbookDocument } from "../ebook/document";
 import button from "../ui/Button.module.css";
@@ -75,8 +76,9 @@ function ConfirmDelete({ label, onConfirm }: { label: string; onConfirm: () => v
 
 function EbookCard({ ebook, now }: { ebook: Ebook; now: number }) {
   const { lang, t } = useAppText();
-  const doc = useEbookDocument(ebook.draft);
-  const ready = now !== 0 && now >= ebook.readyAt;
+  const doc = useEbookDocument(ebook.draft, { content: ebook.content });
+  const ready = isEbookReady(ebook, now);
+  const failed = ebook.status === "failed";
   const base = `/${lang}/app/ebooks/${ebook.id}`;
   const videos = ebook.draft.media.filter((item) => item.kind === "video").length;
   const { title, kind } = doc.content;
@@ -87,7 +89,9 @@ function EbookCard({ ebook, now }: { ebook: Ebook; now: number }) {
         <BookCover doc={doc} />
         <span className={styles.meta}>
           <span className={styles.name}>{title}</span>
-          <Tag variant={ready ? "outline" : "quiet"}>{ready ? t.library.status.ready : t.library.status.creating}</Tag>
+          <Tag variant={ready ? "outline" : "quiet"}>
+            {ready ? t.library.status.ready : failed ? t.library.status.failed : t.library.status.creating}
+          </Tag>
         </span>
       </Link>
       <p className={ui.hint} style={{ marginTop: 4 }}>
@@ -183,7 +187,7 @@ export function Library() {
               <Link
                 href={full ? `/${lang}/app/account/plan` : `/${lang}/app/new`}
                 className={styles.new}
-                onClick={full ? undefined : resetDraft}
+                onClick={full ? undefined : () => resetDraft()}
               >
                 <svg className={`${ui.icon} ${styles.plus}`} viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 5v14M5 12h14" />

@@ -190,6 +190,20 @@ export const fr: Dictionary = {
   account: {
     backToBook: "Retour au livre",
     notice: "Les comptes ouvriront au lancement. Ce formulaire n’est pas encore actif.",
+    messages: {
+      invalid: "Adresse email ou mot de passe incorrect.",
+      exists: "Un compte utilise déjà cette adresse. Connectez-vous plutôt.",
+      weak: "Choisissez un mot de passe plus long, d’au moins 8 caractères.",
+      generic: "Un problème est survenu. Réessayez dans un instant.",
+      confirm: "Presque fini : ouvrez le lien que nous venons de vous envoyer par email pour confirmer votre compte.",
+      sent: "Si un compte utilise cette adresse, un lien pour choisir un nouveau mot de passe est en route.",
+    },
+    reset: {
+      metaTitle: "Nouveau mot de passe",
+      kicker: "Mot de passe",
+      title: "Choisissez un nouveau mot de passe.",
+      submit: "Enregistrer le mot de passe",
+    },
     fields: {
       name: "Nom complet",
       email: "Adresse email",

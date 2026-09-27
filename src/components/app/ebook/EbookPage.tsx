@@ -52,8 +52,9 @@ export function EbookPage({
     .filter(Boolean)
     .join(" ");
 
-  const imageFor = (chapter: number) =>
-    draft.images.length > 0 ? draft.images[chapter % draft.images.length] : undefined;
+  // Imported photos first, then the generated images (not the demo's drawings)
+  const pictures = [...draft.images, ...draft.aiImages.filter((image) => !image.startsWith("drawing:"))];
+  const imageFor = (chapter: number) => (pictures.length > 0 ? pictures[chapter % pictures.length] : undefined);
 
   const photo = (chapter: number, className: string) => (
     <span className={className} data-part="visual">
@@ -80,6 +81,14 @@ export function EbookPage({
         return (
           <span data-part="visual" className={styles.iconWrap}>
             <LineIcon index={chapter} className={small ? styles.iconSmall : styles.icon} />
+          </span>
+        );
+      case "custom":
+        // Illustrations made to measure are generated images once they exist
+        if (pictures.length > 0) return photo(chapter, small ? styles.photoSmall : styles.photoBlock);
+        return (
+          <span data-part="visual" className={styles.visualWrap}>
+            <Drawing index={chapter} className={small ? styles.drawingSmall : styles.drawing} />
           </span>
         );
       case "shapes":
@@ -282,6 +291,11 @@ export function EbookPage({
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
+          {chapter.video && chapter.videoLead && (
+            <div className={styles.text} data-part="video">
+              <p>{chapter.videoLead}</p>
+            </div>
+          )}
           {chapter.video && video(chapter.video)}
           {extras(chapter)}
           {notesArea}

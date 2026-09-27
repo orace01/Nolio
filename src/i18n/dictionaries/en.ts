@@ -187,6 +187,20 @@ export const en = {
   account: {
     backToBook: "Back to the book",
     notice: "Accounts open at launch. This form is not active yet.",
+    messages: {
+      invalid: "Wrong email or password.",
+      exists: "An account already uses this email. Log in instead.",
+      weak: "Choose a longer password, at least 8 characters.",
+      generic: "Something went wrong. Please try again in a moment.",
+      confirm: "Almost there: open the link we just emailed you to confirm your account.",
+      sent: "If an account uses this email, a link to choose a new password is on its way.",
+    },
+    reset: {
+      metaTitle: "New password",
+      kicker: "Password",
+      title: "Choose a new password.",
+      submit: "Save the password",
+    },
     fields: {
       name: "Full name",
       email: "Email address",

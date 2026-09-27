@@ -1,4 +1,5 @@
 import Image from "next/image";
+import QRCode from "qrcode";
 import leaves from "@/assets/hero/hero-leaves.jpg";
 
 /*
@@ -147,56 +148,29 @@ export function Silhouette({ className }: { className?: string }) {
   );
 }
 
-/* A stable number from a string, to vary the pattern of each code */
-function seed(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index++) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
+const qrCache = new Map<string, { size: number; path: string }>();
 
-const qrCache = new Map<string, string>();
-
-/* Modules of a 21 × 21 code: three finder squares, then a pattern drawn from the link */
+/* The modules of a real QR code for the link, scannable once printed */
 function qrPath(value: string) {
   const cached = qrCache.get(value);
   if (cached) return cached;
-
-  let state = seed(value) || 1;
-  const random = () => {
-    state ^= state << 13;
-    state ^= state >>> 17;
-    state ^= state << 5;
-    return (state >>> 0) / 4294967296;
-  };
-
-  const inFinder = (x: number, y: number) => (x < 8 && y < 8) || (x > 12 && y < 8) || (x < 8 && y > 12);
+  const { modules } = QRCode.create(value || " ", { errorCorrectionLevel: "M" });
   let path = "";
-  for (const [x, y] of [
-    [0, 0],
-    [14, 0],
-    [0, 14],
-  ]) {
-    path += `M${x} ${y}h7v7h-7zM${x + 1} ${y + 1}v5h5v-5zM${x + 2} ${y + 2}h3v3h-3z`;
-  }
-  for (let y = 0; y < 21; y++) {
-    for (let x = 0; x < 21; x++) {
-      if (inFinder(x, y)) continue;
-      const timing = (x === 6 || y === 6) && (x + y) % 2 === 0;
-      if (timing || (x !== 6 && y !== 6 && random() < 0.5)) path += `M${x} ${y}h1v1h-1z`;
+  for (let y = 0; y < modules.size; y++) {
+    for (let x = 0; x < modules.size; x++) {
+      if (modules.get(y, x)) path += `M${x} ${y}h1v1h-1z`;
     }
   }
-  qrCache.set(value, path);
-  return path;
+  const result = { size: modules.size, path };
+  qrCache.set(value, result);
+  return result;
 }
 
-// TODO: encode a real, scannable QR code for the print version
 export function QrCode({ value, className }: { value: string; className?: string }) {
+  const { size, path } = qrPath(value);
   return (
-    <svg className={className} viewBox="0 0 21 21" aria-hidden="true" shapeRendering="crispEdges">
-      <path d={qrPath(value)} fillRule="evenodd" />
+    <svg className={className} viewBox={`0 0 ${size} ${size}`} aria-hidden="true" shapeRendering="crispEdges">
+      <path d={path} />
     </svg>
   );
 }

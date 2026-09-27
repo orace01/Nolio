@@ -33,3 +33,19 @@ export function shrinkImage(file: File, maxSize: number, type: "image/jpeg" | "i
     image.src = url;
   });
 }
+
+/*
+ * A picture ready for the ebook: uploaded with the account (a sharper copy),
+ * or kept in the browser as a data URL in the demo.
+ */
+export async function storeImage(file: File, demoSize: number, type: "image/jpeg" | "image/png" = "image/jpeg") {
+  const { api, getRuntime } = await import("@/lib/app/api");
+  if (!getRuntime().remote) return shrinkImage(file, demoSize, type);
+
+  const data = await shrinkImage(file, 1800, type);
+  const blob = await (await fetch(data)).blob();
+  const form = new FormData();
+  form.append("file", new File([blob], file.name, { type: blob.type }));
+  const { url } = await api<{ url: string }>("/api/uploads", { form });
+  return url;
+}

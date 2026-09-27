@@ -9,6 +9,7 @@ import { SplitPage } from "@/components/site/SplitPage";
 import { hasLocale } from "@/i18n/config";
 import { formatPrice } from "@/i18n/format";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { configured } from "@/server/env";
 
 export async function generateMetadata({
   params,
@@ -43,6 +44,10 @@ export default async function SignupPage({
       </p>
 
       <AuthForm
+        mode="signup"
+        lang={lang}
+        remote={configured.supabase}
+        messages={dict.account.messages}
         redirectTo={`/${lang}/app/welcome`}
         submit={t.submit}
         notice={dict.account.notice}
