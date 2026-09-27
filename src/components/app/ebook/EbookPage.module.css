@@ -1,0 +1,730 @@
+/*
+ * A page of the ebook. The page is a size container: type and spacing are
+ * set in em of a base size relative to the page width, so a page reads the
+ * same in the viewer, in a small preview and in the printed PDF.
+ * The six styles change the rhythm; the theme brings color and fonts through
+ * --accent, --soft, --paper, --title-font and --body-font.
+ */
+
+.page {
+  --margin-x: 11%;
+
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 1 / 1.414;
+  overflow: hidden;
+  color: #2b312d;
+  background: var(--paper);
+}
+
+.narrow {
+  --margin-x: 8%;
+}
+
+.wide {
+  --margin-x: 14%;
+}
+
+.inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 13% var(--margin-x) 15%;
+  font-family: var(--body-font), Georgia, serif;
+  font-size: 5.4cqi;
+}
+
+.inner > * {
+  max-width: 100%;
+}
+
+/* Running head and folio */
+
+.run {
+  position: absolute;
+  top: 5.5%;
+  right: var(--margin-x);
+  left: var(--margin-x);
+  overflow: hidden;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.42em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--grey-green);
+}
+
+.folio {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.5em;
+  font-weight: 700;
+  color: var(--accent);
+  transform: translateX(-50%);
+}
+
+/* Chapter openers */
+
+.number {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 4.4em;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+
+.textured .number {
+  color: transparent;
+  background: url("../../../assets/hero/leaves-texture.jpg") 20% 70% / 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.single .number {
+  font-size: 3em;
+}
+
+.numberRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+}
+
+.title {
+  margin-top: 0.45em;
+  font-family: var(--title-font), var(--font-montserrat), sans-serif;
+  font-size: 1.3em;
+  font-weight: var(--title-weight);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-transform: var(--title-case);
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+.single .title {
+  font-size: 1.12em;
+}
+
+.contents .title {
+  margin-top: 0;
+}
+
+.rule {
+  flex: none;
+  width: 22%;
+  height: max(1px, 0.09em);
+  margin: 0.85em 0;
+  background: var(--accent);
+}
+
+/* Running text */
+
+.text p {
+  font-size: 0.62em;
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.text p + p {
+  margin-top: 0.7em;
+}
+
+.text .intro {
+  font-size: 0.7em;
+  line-height: 1.55;
+}
+
+.box {
+  width: 100%;
+  margin-top: 1em;
+  padding: 0.8em 0.9em;
+  border-left: max(1.5px, 0.1em) solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.box p:not(.boxTitle) {
+  margin-top: 0.3em;
+  font-size: 0.6em;
+  line-height: 1.55;
+}
+
+.boxTitle {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.45em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-top: 1em;
+  list-style: none;
+}
+
+.checklist li {
+  display: flex;
+  gap: 0.6em;
+  font-size: 0.6em;
+  line-height: 1.5;
+}
+
+.checklist li::before {
+  content: "";
+  flex: none;
+  width: 0.8em;
+  height: 0.8em;
+  margin-top: 0.32em;
+  border: max(1px, 0.07em) solid var(--accent);
+}
+
+/* Video: thumbnail, title and QR code for the printed copy */
+
+.video {
+  display: grid;
+  grid-template-columns: 2.4em 1fr 2.2em;
+  gap: 0.7em;
+  align-items: center;
+  width: 100%;
+  margin-top: 1em;
+  padding: 0.65em;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  font-family: var(--font-montserrat), sans-serif;
+  color: inherit;
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  height: 1.7em;
+  background: var(--accent);
+}
+
+.play::after {
+  content: "";
+  margin-left: 0.1em;
+  border-top: 0.32em solid transparent;
+  border-bottom: 0.32em solid transparent;
+  border-left: 0.5em solid #fff;
+}
+
+.videoText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  min-width: 0;
+}
+
+.videoKind {
+  font-size: 0.4em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.videoName {
+  overflow: hidden;
+  font-size: 0.55em;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+.qr {
+  display: block;
+  width: 100%;
+  fill: var(--accent);
+}
+
+/* Illustrations */
+
+.visualWrap,
+.iconWrap {
+  display: block;
+  line-height: 0;
+}
+
+.icon,
+.iconSmall,
+.drawing,
+.drawingSmall,
+.frameDrawing,
+.vignette {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon {
+  width: 2.4em;
+  height: 2.4em;
+  margin-bottom: 0.9em;
+  stroke-width: 1.4;
+}
+
+.iconSmall {
+  width: 2em;
+  height: 2em;
+  stroke-width: 1.4;
+}
+
+.drawing {
+  width: 62%;
+  margin-bottom: 1em;
+  stroke-width: 1.3;
+}
+
+.visualWrap:has(.drawing) {
+  width: 100%;
+}
+
+.drawingSmall {
+  width: 4.4em;
+  stroke-width: 1.5;
+}
+
+.shapes {
+  width: 50%;
+  margin-bottom: 1em;
+}
+
+.visualWrap:has(.shapes) {
+  width: 100%;
+}
+
+.shapesSmall {
+  width: 4em;
+}
+
+.photoBlock,
+.photoSmall,
+.photoBand {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #b9c3bd;
+}
+
+.photoBlock {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1em;
+}
+
+.photoSmall {
+  width: 3.4em;
+  aspect-ratio: 1;
+}
+
+.frame,
+.frameSmall {
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--soft) 35%, transparent);
+}
+
+.frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1em;
+}
+
+.frameSmall {
+  width: 4.2em;
+  aspect-ratio: 1;
+}
+
+.frameDrawing {
+  width: 72%;
+  stroke-width: 1.2;
+}
+
+.vignette {
+  width: 34%;
+  margin-top: auto;
+  margin-left: auto;
+  stroke-width: 1.2;
+  opacity: 0.8;
+}
+
+/* Contents */
+
+.toc {
+  width: 100%;
+  list-style: none;
+}
+
+.toc li {
+  display: grid;
+  grid-template-columns: 1.8em 1fr auto;
+  gap: 0.6em;
+  align-items: baseline;
+  padding: 0.5em 0;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  font-size: 0.6em;
+  line-height: 1.35;
+}
+
+.toc li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.dense li {
+  padding: 0.28em 0;
+  font-size: 0.5em;
+}
+
+.tocNumber,
+.tocPage {
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 700;
+}
+
+.tocNumber {
+  color: var(--accent);
+}
+
+.tocPage {
+  color: var(--grey-green);
+}
+
+/* Last page: about the author and the call to action */
+
+.aboutPhoto {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  width: 34%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #b9c3bd;
+}
+
+.silhouette {
+  width: 80%;
+  fill: #eef1ef;
+}
+
+.aboutName {
+  margin-top: 0.9em;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.95em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  width: 100%;
+  margin-top: 1.1em;
+  padding: 0.9em 1em;
+  font-family: var(--font-montserrat), sans-serif;
+  color: #fff;
+  background: var(--accent);
+}
+
+.ctaLabel {
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ctaUrl {
+  overflow: hidden;
+  font-size: 0.42em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.resources {
+  width: 100%;
+  margin-top: 1.1em;
+}
+
+.resources ul {
+  margin-top: 0.4em;
+  list-style: none;
+}
+
+.resources li {
+  padding: 0.3em 0;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  font-size: 0.55em;
+}
+
+.resources a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.credit {
+  position: absolute;
+  bottom: 9.5%;
+  left: var(--margin-x);
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.36em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+/* Field notes: the lined space left at the end of a page, for the reader */
+
+.notesArea {
+  flex: 1;
+  width: 100%;
+  min-height: 3em;
+  margin-top: 1.2em;
+  padding-top: 0.2em;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.4em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+  background: linear-gradient(to bottom, transparent calc(100% - 1px), rgb(93 109 100 / 0.3) calc(100% - 1px)) 0 0 /
+    100% 2.6em;
+}
+
+/* ---------- Style: Botanica, photographs and calm type ---------- */
+
+.photoBand {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 40%;
+}
+
+.botanica.opener .inner {
+  padding-top: 64%;
+}
+
+.botanica.single .photoBand {
+  height: 22%;
+}
+
+.botanica.single .inner {
+  padding-top: 40%;
+}
+
+.botanica .run {
+  z-index: 1;
+}
+
+.botanica.opener .run,
+.botanica.single .run {
+  color: #fff;
+}
+
+.botanica .number {
+  font-size: 1em;
+  letter-spacing: 0.08em;
+}
+
+.botanica .title {
+  text-transform: none;
+}
+
+/* ---------- Style: Field notes, light pages to annotate ---------- */
+
+.notes .inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--margin-x) - 4%);
+  width: 1px;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.notes .title {
+  font-weight: 600;
+  text-transform: none;
+}
+
+.notes .number {
+  font-size: 2.6em;
+}
+
+.notes .box {
+  border-left: 0;
+  background: var(--soft);
+}
+
+/* ---------- Style: Studio, blocks of color and giant numbers ---------- */
+
+.studio.opener {
+  color: #fff;
+  background: var(--accent);
+}
+
+.studio.opener .number {
+  font-size: 6.4em;
+  color: var(--soft);
+}
+
+.studio.opener.textured .number {
+  color: transparent;
+}
+
+.studio.opener .title,
+.studio.opener .folio {
+  color: #fff;
+}
+
+.studio.opener .run {
+  color: rgb(255 255 255 / 0.65);
+}
+
+.studio.opener .rule {
+  background: #fff;
+}
+
+.studio.opener .icon,
+.studio.opener .drawing {
+  stroke: #fff;
+}
+
+/* Shapes drawn in the accent would vanish into the colored page */
+.studio.opener .visualWrap {
+  --accent: #fff;
+}
+
+.studio.opener .text {
+  color: rgb(255 255 255 / 0.88);
+}
+
+.studio .title {
+  text-transform: uppercase;
+}
+
+.studio.body .inner::before,
+.studio.single .inner::before,
+.studio.contents .inner::before,
+.studio.closing .inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3%;
+  background: var(--accent);
+}
+
+.studio .checklist {
+  counter-reset: item;
+}
+
+.studio .checklist li::before {
+  width: 1.6em;
+  height: auto;
+  margin-top: 0;
+  border: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  counter-increment: item;
+  content: counter(item, decimal-leading-zero);
+}
+
+/* ---------- Style: Editorial, centered serif and drop caps ---------- */
+
+.editorial.opener .inner {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.editorial .title {
+  text-transform: none;
+}
+
+.editorial .number {
+  font-size: 0.9em;
+  letter-spacing: 0.3em;
+}
+
+.editorial.opener .rule {
+  width: 30%;
+  height: 0;
+  padding-top: 0.25em;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  background: none;
+}
+
+.editorial.body .text p:first-child::first-letter {
+  float: left;
+  padding: 0.06em 0.1em 0 0;
+  font-family: var(--title-font), serif;
+  font-size: 3.3em;
+  line-height: 0.82;
+  color: var(--accent);
+}
+
+.editorial .box {
+  padding: 0.7em 0;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  border-left: 0;
+  background: none;
+}
+
+/* ---------- Style: Gallery, one illustration hand throughout ---------- */
+
+.gallery .title {
+  text-transform: none;
+}
+
+.gallery .number {
+  font-size: 1em;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Commenting in the viewer ---------- */
+
+.page [data-part] {
+  transition: box-shadow 0.15s ease;
+}
+
+.page[data-highlight="title"] [data-part="title"],
+.page[data-highlight="text"] [data-part="text"],
+.page[data-highlight="video"] [data-part="video"],
+.page[data-highlight="list"] [data-part="list"],
+.page[data-highlight="box"] [data-part="box"],
+.page[data-highlight="contents"] [data-part="contents"],
+.page[data-highlight="visual"] [data-part="visual"],
+.page[data-highlight="about"] [data-part="about"],
+.page[data-highlight="cta"] [data-part="cta"],
+.page[data-highlight="cover"] [data-part="cover"] {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: 0 0 0 max(2px, 0.12em) color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.page[data-highlight="cover"] [data-part="cover"] {
+  box-shadow: inset 0 0 0 max(3px, 0.2em) color-mix(in srgb, var(--accent) 55%, transparent);
+}

@@ -1,0 +1,381 @@
+/* Creation in progress, the viewer with its comments, the downloads */
+
+/* Creation */
+
+.tasks {
+  margin-top: 24px;
+  list-style: none;
+}
+
+.tasks li {
+  display: grid;
+  grid-template-columns: 1fr 160px 110px;
+  gap: 16px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--green-deep);
+}
+
+.tasks li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.state {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.waiting {
+  color: var(--grey-green);
+}
+
+.remaining {
+  margin-top: 8px;
+}
+
+/* Viewer */
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  min-height: 0;
+}
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+  padding: 22px 32px;
+  overflow: hidden;
+}
+
+.turn {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+}
+
+.turnButton {
+  display: grid;
+  place-items: center;
+  padding: 8px 4px;
+  border: 0;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+.turnButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.turnButton:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.turnButton svg {
+  width: 40px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+}
+
+.back svg {
+  transform: scaleX(-1);
+}
+
+/* Two pages side by side, as large as the card allows */
+.spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(660px, 100%, calc((max(100svh - 84px, 700px) - 214px) * 1.414));
+  animation: turn 0.22s ease both;
+}
+
+@keyframes turn {
+  from {
+    opacity: 0.35;
+  }
+}
+
+.sheet {
+  position: relative;
+  box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55);
+  cursor: pointer;
+}
+
+/* The fold between the two pages */
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.leftSheet::after {
+  box-shadow: inset -12px 0 16px -14px rgb(0 0 0 / 0.35);
+}
+
+.rightSheet::after {
+  box-shadow: inset 12px 0 16px -14px rgb(0 0 0 / 0.35);
+}
+
+.selectedSheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  box-shadow: inset 0 0 0 2px rgb(42 63 52 / 0.6);
+  pointer-events: none;
+}
+
+.sheet [data-part]:hover {
+  background-color: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.strip {
+  display: flex;
+  gap: 6px;
+  max-width: 100%;
+  padding: 2px;
+  overflow-x: auto;
+}
+
+.stripPage {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  font: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--grey-green);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.stripPage:hover {
+  border-color: var(--green-deep);
+}
+
+.stripPage:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.on {
+  border: 2px solid var(--green-deep);
+  color: var(--green-deep);
+}
+
+/* Comments */
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  padding: 22px 22px 20px;
+  overflow: auto;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.comment {
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-strong);
+}
+
+.where {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.applied .where span:last-child {
+  color: var(--green-deep);
+}
+
+.commentText {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--green-deep);
+}
+
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.commentForm textarea {
+  min-height: 72px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.final {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+/* Downloads */
+
+.download {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.downloadCover {
+  width: 220px;
+}
+
+.meta {
+  margin-top: 14px;
+}
+
+.format {
+  display: grid;
+  grid-template-columns: 34px 1fr auto auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.format:last-of-type {
+  border-bottom: 1px solid var(--line);
+}
+
+.formatIcon {
+  width: 26px;
+  height: 26px;
+  color: var(--green-deep);
+}
+
+.formatName {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.formatText {
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.notice {
+  min-height: 18px;
+  margin-top: 12px;
+}
+
+/* Missing ebook */
+
+.missing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* Print: one ebook page per sheet of paper */
+
+.print {
+  min-height: 100svh;
+  padding: 32px 24px 64px;
+  background: var(--stage-bg);
+}
+
+.printBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  max-width: 148mm;
+  margin: 0 auto 28px;
+}
+
+.printPages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.printSheet {
+  width: 148mm;
+  max-width: 100%;
+  box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  .print {
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .printBar {
+    display: none;
+  }
+
+  .printPages {
+    display: block;
+  }
+
+  .printSheet {
+    width: 148mm;
+    height: 210mm;
+    box-shadow: none;
+    break-after: page;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spread {
+    animation: none;
+  }
+}

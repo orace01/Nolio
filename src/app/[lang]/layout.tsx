@@ -5,8 +5,6 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { montserrat } from "../fonts";
 import "../globals.css";
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }

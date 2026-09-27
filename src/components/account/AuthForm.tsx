@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import button from "@/components/shared/Button.module.css";
 import styles from "./AuthForm.module.css";
@@ -21,17 +22,22 @@ type AuthFormProps = {
   notice: string;
   /* Rendered between the fields and the button (consent, forgotten password) */
   extra?: ReactNode;
+  /* Where a valid submit leads, for the demo of the app */
+  redirectTo?: string;
 };
 
-export function AuthForm({ fields, submit, notice, extra }: AuthFormProps) {
+export function AuthForm({ fields, submit, notice, extra, redirectTo }: AuthFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
   return (
     <form
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
-        setSubmitted(true);
+        // TODO: authenticate before entering the app
+        if (redirectTo) router.push(redirectTo);
+        else setSubmitted(true);
       }}
     >
       {fields.map((field) => {

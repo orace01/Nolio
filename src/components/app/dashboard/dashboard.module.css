@@ -1,0 +1,393 @@
+/* Library, brand kit and account */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  min-height: 0;
+  padding: 36px 56px;
+  overflow: auto;
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Library */
+
+.usage {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.usageBar {
+  width: 140px;
+  margin: 8px 0 6px;
+}
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 36px;
+  list-style: none;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+}
+
+.bookLink {
+  display: block;
+}
+
+.bookLink:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 4px;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--green-deep);
+}
+
+.bookActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 6px;
+}
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-strong);
+}
+
+.new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  aspect-ratio: 3 / 4;
+  border: 1.4px dashed var(--line-strong);
+  text-align: center;
+  color: var(--green-deep);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.new:hover {
+  border-color: var(--green-deep);
+  background: rgb(255 255 255 / 0.2);
+}
+
+.new:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.plus {
+  width: 36px;
+  height: 36px;
+}
+
+/* Brand kit */
+
+.brand {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 56px;
+  min-height: 0;
+  padding: 32px 56px 28px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+  padding-right: 8px;
+  overflow: auto;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border: 1.2px dashed var(--line-strong);
+  cursor: pointer;
+}
+
+.upload:hover {
+  border-color: var(--green-deep);
+}
+
+.upload:has(input:focus-visible) {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.monogram,
+.portrait {
+  position: relative;
+  display: grid;
+  flex: none;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+}
+
+.monogram {
+  place-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--green-deep);
+}
+
+.monogramImage {
+  background: rgb(255 255 255 / 0.6);
+}
+
+.portrait {
+  place-items: end center;
+  background: #b9c3bd;
+}
+
+.portrait svg {
+  width: 44px;
+  height: 44px;
+  fill: #eef1ef;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--grey-green);
+}
+
+.swatchColor {
+  display: block;
+  width: 54px;
+  height: 40px;
+  border: 1px solid rgb(0 0 0 / 0.15);
+}
+
+.swatchRemove {
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--grey-green);
+  background: none;
+  cursor: pointer;
+}
+
+.swatchRemove:hover {
+  color: var(--green-deep);
+  text-decoration: underline;
+}
+
+.addSwatch {
+  position: relative;
+  cursor: pointer;
+}
+
+.addSwatch .swatchColor {
+  display: grid;
+  place-items: center;
+  border: 1.2px dashed var(--line-strong);
+  font-size: 18px;
+  color: var(--green-deep);
+}
+
+.addSwatch input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 54px;
+  height: 40px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.addSwatch:has(input:focus-visible) .swatchColor {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewPage {
+  box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55);
+}
+
+/* Account */
+
+.tabs {
+  display: flex;
+  gap: 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs a {
+  position: relative;
+  padding-bottom: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.tabs a:hover {
+  color: var(--green-deep);
+}
+
+.tabs a[aria-current="page"] {
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.tabs a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--green-deep);
+}
+
+.tabs a:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 3px;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.planPro {
+  border: 1.6px solid var(--green-deep);
+  background: var(--surface-strong);
+}
+
+.planHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.amount {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--green-deep);
+}
+
+.perks {
+  list-style: none;
+}
+
+.perks li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--green-deep);
+}
+
+.planAction {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.profile {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 320px));
+  gap: 22px 26px;
+}
+
+.profileFooter {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}

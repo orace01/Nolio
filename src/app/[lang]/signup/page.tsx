@@ -43,6 +43,7 @@ export default async function SignupPage({
       </p>
 
       <AuthForm
+        redirectTo={`/${lang}/app/welcome`}
         submit={t.submit}
         notice={dict.account.notice}
         fields={[

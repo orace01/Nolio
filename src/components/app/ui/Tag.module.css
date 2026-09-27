@@ -1,0 +1,26 @@
+/* Small square labels: plan tiers, statuses */
+
+.tag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  padding: 3px 6px;
+  border: 1px solid var(--green-deep);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--green-deep);
+}
+
+.filled {
+  color: #fff;
+  background: var(--green-deep);
+}
+
+.quiet {
+  border-color: transparent;
+  color: var(--grey-green);
+}

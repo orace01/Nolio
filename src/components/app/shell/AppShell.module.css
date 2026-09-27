@@ -1,0 +1,28 @@
+/* The grey stage and the framed card of the app, as on the site */
+
+.stage {
+  min-height: 100svh;
+  padding: 20px 24px 64px;
+  background: var(--stage-bg);
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  max-width: 1400px;
+  height: calc(100svh - 84px);
+  min-height: 700px;
+  margin: 0 auto;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--app-card-bg);
+  box-shadow: 0 40px 50px -24px rgb(0 0 0 / 0.55);
+}
+
+/* The page under the top bar: each screen scrolls inside the card */
+.main {
+  display: grid;
+  min-height: 0;
+  overflow: hidden;
+}

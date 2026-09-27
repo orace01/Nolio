@@ -30,6 +30,20 @@
   --green-ink: #2f4439;
   --grey-green: #5d6d64;
   --ink: #36453d;
+
+  /* Hairlines and translucent surfaces of the app screens */
+  --line: rgb(42 63 52 / 0.2);
+  --line-strong: rgb(42 63 52 / 0.45);
+  --surface: rgb(255 255 255 / 0.38);
+  --surface-strong: rgb(255 255 255 / 0.62);
+  --paper: #f4f3ef;
+  --app-card-bg: radial-gradient(
+    ellipse 60% 110% at 50% 45%,
+    #d0d0d0 0%,
+    #cecece 30%,
+    #c6c6c6 65%,
+    #bababa 100%
+  );
 }
 
 * {

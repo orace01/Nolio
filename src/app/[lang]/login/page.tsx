@@ -30,6 +30,7 @@ export default async function LoginPage({ params }: PageProps<"/[lang]/login">) 
       <h1 className={page.title}>{t.title}</h1>
 
       <AuthForm
+        redirectTo={`/${lang}/app`}
         submit={t.submit}
         notice={dict.account.notice}
         fields={[
