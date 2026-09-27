@@ -1,0 +1,41 @@
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+}
+
+/* Hairline between the two languages */
+.option + .option::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 10px;
+  margin-right: 10px;
+  vertical-align: -1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.option {
+  position: relative;
+  padding: 6px 0;
+  font-weight: 500;
+}
+
+/* Active language: bold and underlined, like the current page in the menu */
+.option[aria-current="true"] {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 3px;
+}

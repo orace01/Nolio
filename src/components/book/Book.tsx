@@ -7,8 +7,11 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { NAV_ITEMS } from "@/components/site/navigation";
+import { PAGE_IDS } from "@/components/site/navigation";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/en";
 import styles from "./Book.module.css";
+import { LanguageSwitch } from "./LanguageSwitch";
 
 export type BookPage = {
   id: string;
@@ -27,7 +30,14 @@ export type BookPage = {
  * Scrolling drives the turn directly, so a page moves exactly as far as the
  * wheel, the trackpad or the finger goes.
  */
-export function Book({ pages }: { pages: BookPage[] }) {
+type BookProps = {
+  pages: BookPage[];
+  lang: Locale;
+  nav: Dictionary["nav"];
+  ui: Dictionary["book"];
+};
+
+export function Book({ pages, lang, nav, ui }: BookProps) {
   const bookRef = useRef<HTMLElement>(null);
   const secondAnchorRef = useRef<HTMLDivElement>(null);
   const pendingRef = useRef<{ target: number; at: number } | null>(null);
@@ -126,7 +136,7 @@ export function Book({ pages }: { pages: BookPage[] }) {
                 inert={index !== current}
               >
                 <div className={styles.content}>{page.content}</div>
-                {!page.cover && <PageChrome page={page} index={index} />}
+                {!page.cover && <PageChrome page={page} index={index} nav={nav} />}
               </article>
             ))}
           </div>
@@ -135,7 +145,7 @@ export function Book({ pages }: { pages: BookPage[] }) {
         <button
           type="button"
           className={`${styles.arrow} ${styles.previous}`}
-          aria-label="Previous page"
+          aria-label={ui.previous}
           disabled={current === 0}
           onClick={() => turn(-1)}
         >
@@ -144,12 +154,19 @@ export function Book({ pages }: { pages: BookPage[] }) {
         <button
           type="button"
           className={`${styles.arrow} ${styles.next}`}
-          aria-label="Next page"
+          aria-label={ui.next}
           disabled={current === pages.length - 1}
           onClick={() => turn(1)}
         >
           <ArrowIcon />
         </button>
+
+        <LanguageSwitch
+          lang={lang}
+          label={ui.language}
+          names={ui.languageNames}
+          className={styles.language}
+        />
       </div>
     </section>
   );
@@ -171,7 +188,13 @@ function stepHeight(book: HTMLElement, secondAnchor: HTMLElement) {
 }
 
 /* Running head and page dots, the same on every page after the cover */
-function PageChrome({ page, index }: { page: BookPage; index: number }) {
+type PageChromeProps = {
+  page: BookPage;
+  index: number;
+  nav: Dictionary["nav"];
+};
+
+function PageChrome({ page, index, nav }: PageChromeProps) {
   return (
     <>
       <a href="#home" className={styles.brand}>
@@ -179,14 +202,14 @@ function PageChrome({ page, index }: { page: BookPage; index: number }) {
       </a>
       <nav className={styles.nav} aria-label="Main">
         <ul className={styles.navList}>
-          {NAV_ITEMS.map((item) => (
-            <li key={item.href}>
+          {PAGE_IDS.map((id) => (
+            <li key={id}>
               <a
-                href={item.href}
+                href={`#${id}`}
                 className={styles.navLink}
-                aria-current={item.href === `#${page.id}` ? "page" : undefined}
+                aria-current={id === page.id ? "page" : undefined}
               >
-                {item.label}
+                {nav[id]}
               </a>
             </li>
           ))}
@@ -196,9 +219,9 @@ function PageChrome({ page, index }: { page: BookPage; index: number }) {
         {String(index + 1).padStart(2, "0")}
       </span>
       <span className={styles.dots} aria-hidden="true">
-        {NAV_ITEMS.map((item, dot) => (
+        {PAGE_IDS.map((id, dot) => (
           <span
-            key={item.href}
+            key={id}
             className={
               dot === index ? `${styles.dot} ${styles.dotCurrent}` : styles.dot
             }

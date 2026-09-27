@@ -1,7 +1,4 @@
-export const NAV_ITEMS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Products", href: "#products" },
-  { label: "Service", href: "#service" },
-  { label: "Contact", href: "#contact" },
-];
+/* The pages of the book, in reading order; labels come from the dictionary */
+export const PAGE_IDS = ["home", "about", "formats", "process", "contact"] as const;
+
+export type PageId = (typeof PAGE_IDS)[number];

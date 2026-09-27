@@ -170,6 +170,15 @@
   opacity: 0;
 }
 
+/* Language switch, in the grey margin above the frame's right corner */
+.language {
+  position: absolute;
+  top: calc(var(--pad-top) / 2);
+  right: calc((100% - var(--frame-w)) / 2);
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
 /* Running head, the same on every page */
 
 .brand {

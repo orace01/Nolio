@@ -2,11 +2,12 @@ import Image from "next/image";
 import leaves from "@/assets/hero/hero-leaves.jpg";
 import { SOCIAL_ICONS } from "@/components/hero/SocialIcons";
 import { ArrowLink } from "@/components/shared/ArrowLink";
+import type { Dictionary } from "@/i18n/dictionaries/en";
 import page from "./page.module.css";
 import styles from "./ContactPage.module.css";
 import { WaitlistForm } from "./WaitlistForm";
 
-export function ContactPage() {
+export function ContactPage({ t }: { t: Dictionary["contact"] }) {
   return (
     <>
       <div className={styles.photo}>
@@ -23,17 +24,14 @@ export function ContactPage() {
       </div>
 
       <div className={styles.panel}>
-        <p className={page.kicker}>Contact</p>
-        <h2 className={page.title}>Join the waitlist.</h2>
-        <p className={page.lead}>
-          Nolio is opening to a first group of authors. Leave your email and we
-          will write to you as soon as your seat is ready.
-        </p>
+        <p className={page.kicker}>{t.kicker}</p>
+        <h2 className={page.title}>{t.title}</h2>
+        <p className={page.lead}>{t.lead}</p>
 
-        <WaitlistForm />
+        <WaitlistForm t={t.form} />
 
         <div className={styles.follow}>
-          <span className={page.label}>Follow Nolio</span>
+          <span className={page.label}>{t.follow}</span>
           <ul className={styles.socials}>
             {SOCIAL_ICONS.map((icon) => (
               <li key={icon.label}>
@@ -50,13 +48,11 @@ export function ContactPage() {
             ))}
           </ul>
         </div>
-        <p className={`${page.small} ${styles.legal}`}>
-          © 2026 Nolio. All rights reserved.
-        </p>
+        <p className={`${page.small} ${styles.legal}`}>{t.legal}</p>
       </div>
 
       <ArrowLink href="#home" className={page.next}>
-        Back to cover
+        {t.back}
       </ArrowLink>
     </>
   );

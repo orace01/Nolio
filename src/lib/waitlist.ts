@@ -1,9 +1,6 @@
+/* The form shows the message for the status in the visitor's language */
 export type WaitlistState = {
   status: "idle" | "success" | "error";
-  message: string;
 };
 
-export const INITIAL_WAITLIST_STATE: WaitlistState = {
-  status: "idle",
-  message: "",
-};
+export const INITIAL_WAITLIST_STATE: WaitlistState = { status: "idle" };

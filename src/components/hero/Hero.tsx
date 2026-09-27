@@ -1,10 +1,16 @@
 import Image from "next/image";
 import heroLeaves from "@/assets/hero/hero-leaves.jpg";
+import { PAGE_IDS } from "@/components/site/navigation";
+import type { Dictionary } from "@/i18n/dictionaries/en";
 import styles from "./Hero.module.css";
-import { NAV_ITEMS } from "@/components/site/navigation";
 import { SOCIAL_ICONS } from "./SocialIcons";
 
-export function Hero() {
+type HeroProps = {
+  t: Dictionary["hero"];
+  nav: Dictionary["nav"];
+};
+
+export function Hero({ t, nav }: HeroProps) {
   return (
     <div className={styles.card}>
       <div className={styles.photo}>
@@ -37,7 +43,7 @@ export function Hero() {
       <header>
         <div className={styles.follow}>
           <p>
-            Follow <span className={styles.brand}>Nolio</span>
+            {t.follow} <span className={styles.brand}>Nolio</span>
           </p>
           <ul className={styles.socials}>
             {SOCIAL_ICONS.map((icon) => (
@@ -58,21 +64,21 @@ export function Hero() {
 
         <nav className={styles.nav} aria-label="Main">
           <ul className={styles.navList}>
-            {NAV_ITEMS.map((item, index) => (
-              <li key={item.href}>
+            {PAGE_IDS.map((id, index) => (
+              <li key={id}>
                 <a
-                  href={item.href}
+                  href={`#${id}`}
                   className={styles.navLink}
                   aria-current={index === 0 ? "page" : undefined}
                 >
-                  {item.label}
+                  {nav[id]}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
 
-        <button type="button" className={styles.burger} aria-label="Open menu">
+        <button type="button" className={styles.burger} aria-label={t.menu}>
           <span />
           <span />
           <span />
@@ -81,7 +87,7 @@ export function Hero() {
 
       <div className={styles.slider} aria-hidden="true">
         <span className={styles.slideIndex}>01</span>
-        <span className={styles.slideLabel}>Digital experience</span>
+        <span className={styles.slideLabel}>{t.slideLabel}</span>
         <svg className={styles.chevronUp} viewBox="0 0 6 3">
           <polyline points="0.5,2.6 3,0.4 5.5,2.6" />
         </svg>
@@ -100,16 +106,11 @@ export function Hero() {
       </div>
 
       <div className={styles.intro}>
-        <p className={styles.kicker}>Simple way to</p>
-        <h2 className={styles.title}>Get inspired.</h2>
-        <p className={styles.lead}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          nisi ut aliquip.
-        </p>
+        <p className={styles.kicker}>{t.kicker}</p>
+        <h2 className={styles.title}>{t.title}</h2>
+        <p className={styles.lead}>{t.lead}</p>
         <a href="#about" className={styles.more}>
-          Learn more
+          {t.cta}
           <svg className={styles.arrow} viewBox="0 0 74 6" aria-hidden="true">
             <line x1="0" y1="3" x2="73" y2="3" />
             <polyline points="69.5,0.4 73.2,3 69.5,5.6" />
