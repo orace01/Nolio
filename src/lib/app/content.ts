@@ -87,6 +87,52 @@ function firstSentence(idea: string) {
   return sentence.length > 90 ? `${sentence.slice(0, 88).trim()}…` : sentence;
 }
 
+/*
+ * Generic openings stripped from the start of a sentence, so the fallback
+ * title and subject read as a topic, not as a copy of how the author phrased
+ * their idea. Two kinds, handled differently:
+ * - a "framing" ("Un guide pour...", "A checklist to...") names the format
+ *   and hands off to the real topic right after "pour"/"to" - what follows
+ *   already IS the topic, verb included ("lancer sa boutique"), so nothing
+ *   more is stripped once one of these matches.
+ * - a "personal opening" ("Je veux...", "I want to...") is usually followed
+ *   by a second, generic verb ("créer", "transmettre") that names the
+ *   action rather than the topic, so one more strip follows it.
+ */
+const FRAMINGS = [
+  /^(un|une)\s+(guide|checklist|carnet|support|ebook)[^,]*?\s(pour|sur|afin de)\s+/i,
+  /^(a|an)\s+(practical\s+)?(guide|checklist|booklet|companion)[^,]*?\s(to|for|on)\s+/i,
+];
+
+const PERSONAL_OPENINGS = [
+  /^je\s+(veux|voudrais|aimerais)\s+(vous\s+)?/i,
+  /^j['’]aimerais\s+/i,
+  /^comment\s+/i,
+  /^i\s+(want|would like|wish)\s+to\s+/i,
+  /^how\s+to\s+/i,
+];
+
+const FILLER_VERB =
+  /^(cr[eé]er|lancer|construire|d[eé]velopper|pr[eé]senter|transmettre|partager|aider|apprendre|montrer|proposer|expliquer|create|build|launch|develop|present|share|teach|show|explain)\s+/i;
+
+/* A trailing article or preposition left dangling by the word cap reads as
+   unfinished, more so than a slightly short title does */
+const TRAILING_JUNK =
+  /[\s,;:-]*\s+(et|ou|de|du|des|un|une|le|la|les|à|au|aux|en|avec|sans|dans|sur|pour|and|or|of|the|a|an|to|for|with|in|on)$/i;
+
+/* The topic of the idea, with its generic opening removed when there is one */
+function coreTopic(idea: string) {
+  const sentence = firstSentence(idea).replace(/…$/, "");
+
+  const framing = FRAMINGS.find((pattern) => pattern.test(sentence));
+  if (framing) return sentence.replace(framing, "").trim();
+
+  const personal = PERSONAL_OPENINGS.find((pattern) => pattern.test(sentence));
+  if (personal) return sentence.replace(personal, "").trim().replace(FILLER_VERB, "").trim();
+
+  return sentence;
+}
+
 function baseAnalysis(idea: string, lang: Locale): BaseAnalysis {
   if (isSampleIdea(idea)) return SAMPLE_ANALYSIS[lang];
 
@@ -94,7 +140,8 @@ function baseAnalysis(idea: string, lang: Locale): BaseAnalysis {
   const found = TYPES.find((entry) => entry.match.test(text)) ?? TYPES[TYPES.length - 1];
   const goal = GOALS.find((entry) => entry.match.test(text)) ?? GOALS[GOALS.length - 1];
   const videos = /vid[eé]o/.test(text);
-  const subject = firstSentence(idea) || (lang === "fr" ? "À préciser" : "To be specified");
+  const topic = coreTopic(idea);
+  const subject = topic ? topic.charAt(0).toUpperCase() + topic.slice(1) : lang === "fr" ? "À préciser" : "To be specified";
 
   return {
     type: found.type[lang],
@@ -507,12 +554,15 @@ const PLACEHOLDER: Record<
 const PLACEHOLDER_PARTS = { short: 5, medium: 9, long: 15 };
 
 function titleFromIdea(idea: string, fallback: string) {
-  const words = firstSentence(idea)
-    .replace(/…$/, "")
+  let words = coreTopic(idea)
     .split(/\s+/)
     .filter(Boolean)
-    .slice(0, 6)
-    .join(" ");
+    .slice(0, 7)
+    .join(" ")
+    // A word inside the 7 may still carry the comma that followed it in the sentence
+    .replace(/[,;:]+$/, "");
+  // The word cap can leave a dangling article or preposition; drop it, once or twice
+  for (let pass = 0; pass < 2; pass++) words = words.replace(TRAILING_JUNK, "").replace(/[,;:]+$/, "");
   return words ? words.charAt(0).toUpperCase() + words.slice(1) : fallback;
 }
 
