@@ -29,21 +29,21 @@ export type BookPage = {
  */
 export function Book({ pages }: { pages: BookPage[] }) {
   const bookRef = useRef<HTMLElement>(null);
-  const stepRef = useRef<HTMLDivElement>(null);
+  const secondAnchorRef = useRef<HTMLDivElement>(null);
   const pendingRef = useRef<{ target: number; at: number } | null>(null);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const book = bookRef.current;
-    const step = stepRef.current;
-    if (!book || !step) return;
+    const second = secondAnchorRef.current;
+    if (!book || !second) return;
 
     let frame = 0;
     let shown = 0;
 
     const update = () => {
       frame = 0;
-      const turned = -book.getBoundingClientRect().top / step.offsetHeight;
+      const turned = -book.getBoundingClientRect().top / stepHeight(book, second);
       const progress = Math.min(Math.max(turned, 0), pages.length - 1);
       book.style.setProperty("--p", progress.toFixed(4));
 
@@ -71,12 +71,12 @@ export function Book({ pages }: { pages: BookPage[] }) {
      turn is still running chain from the page it is heading to. */
   const turn = (direction: 1 | -1) => {
     const book = bookRef.current;
-    const step = stepRef.current;
-    if (!book || !step) return;
+    const second = secondAnchorRef.current;
+    if (!book || !second) return;
 
-    const stepHeight = step.offsetHeight;
+    const step = stepHeight(book, second);
     const bookTop = book.getBoundingClientRect().top + window.scrollY;
-    const progress = (window.scrollY - bookTop) / stepHeight;
+    const progress = (window.scrollY - bookTop) / step;
     const pending = pendingRef.current;
     const chaining =
       pending !== null &&
@@ -90,7 +90,7 @@ export function Book({ pages }: { pages: BookPage[] }) {
     const target = Math.min(Math.max(from + direction, 0), pages.length - 1);
 
     pendingRef.current = { target, at: performance.now() };
-    window.scrollTo({ top: bookTop + target * stepHeight });
+    window.scrollTo({ top: bookTop + target * step });
   };
 
   return (
@@ -103,7 +103,7 @@ export function Book({ pages }: { pages: BookPage[] }) {
         <div
           key={page.id}
           id={page.id}
-          ref={index === 0 ? stepRef : undefined}
+          ref={index === 1 ? secondAnchorRef : undefined}
           className={styles.anchor}
           style={{ "--k": index } as CSSProperties}
         />
@@ -163,6 +163,11 @@ function ArrowIcon() {
       <polyline points="48,1 54.8,6 48,11" />
     </svg>
   );
+}
+
+/* Scroll distance for one page: where the second page's anchor sits */
+function stepHeight(book: HTMLElement, secondAnchor: HTMLElement) {
+  return secondAnchor.getBoundingClientRect().top - book.getBoundingClientRect().top;
 }
 
 /* Running head and page dots, the same on every page after the cover */

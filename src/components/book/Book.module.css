@@ -8,13 +8,14 @@
   height: calc((var(--count) - 1) * var(--step) + 100svh);
 }
 
-/* Targets for the menu links: the scroll position where each page lies open */
+/* Targets for the menu links: the scroll position where each page lies open.
+   Kept 1px tall so the last one never pushes past the end of the book. */
 .anchor {
   position: absolute;
   top: calc(var(--k) * var(--step));
   left: 0;
   width: 1px;
-  height: var(--step);
+  height: 1px;
 }
 
 .viewport {
