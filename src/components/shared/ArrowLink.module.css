@@ -1,0 +1,25 @@
+.link {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 14);
+  width: fit-content;
+  font-size: max(calc(var(--u) * 5.7), 10px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.arrow {
+  width: calc(var(--u) * 50);
+  height: calc(var(--u) * 6);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.link:hover .arrow,
+.link:focus-visible .arrow {
+  transform: translateX(calc(var(--u) * 4));
+}

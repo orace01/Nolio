@@ -1,0 +1,58 @@
+/* Same split as the hero: photo on the left, grey panel on the right */
+
+.photo {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(100% * 345 / 707);
+  overflow: hidden;
+}
+
+.photoImage {
+  object-fit: cover;
+  object-position: 50% 85%;
+}
+
+.bigNumber {
+  top: calc(var(--u) * 391.6);
+  left: calc(var(--u) * 100);
+}
+
+.panel {
+  position: absolute;
+  top: calc(var(--u) * 64);
+  right: calc(var(--u) * 63.8);
+  bottom: calc(var(--u) * 58);
+  left: calc(100% * 345 / 707 + var(--u) * 40);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.follow {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 14);
+  margin-top: calc(var(--u) * 16);
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 7);
+  list-style: none;
+}
+
+.socials a {
+  display: block;
+}
+
+.socials svg {
+  display: block;
+  height: max(calc(var(--u) * 6.5), 12px);
+  fill: currentColor;
+}
+
+.legal {
+  margin-top: calc(var(--u) * 8);
+  color: var(--grey-green);
+}

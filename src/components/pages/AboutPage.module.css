@@ -1,0 +1,58 @@
+.text {
+  position: absolute;
+  top: calc(var(--u) * 62);
+  bottom: calc(var(--u) * 52);
+  left: calc(var(--u) * 105.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: calc(62% - var(--u) * 139.5);
+}
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 16);
+  margin-top: calc(var(--u) * 22);
+  list-style: none;
+}
+
+.number {
+  display: block;
+  font-size: calc(var(--u) * 20);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.principleTitle {
+  margin-top: calc(var(--u) * 6);
+}
+
+.principleText {
+  margin-top: calc(var(--u) * 4);
+}
+
+.more {
+  margin-top: calc(var(--u) * 22);
+}
+
+/* Inset photo bleeding off the bottom edge, with the page number on it */
+.photo {
+  position: absolute;
+  top: calc(var(--u) * 58);
+  right: calc(var(--u) * 24.5);
+  bottom: 0;
+  left: 62%;
+  overflow: hidden;
+}
+
+.photoImage {
+  object-fit: cover;
+  object-position: 35% 45%;
+}
+
+.bigNumber {
+  top: calc(var(--u) * 333.6);
+  left: calc(var(--u) * 14);
+}

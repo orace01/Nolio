@@ -1,0 +1,72 @@
+:root {
+  --pad-x: clamp(16px, 3vw, 48px);
+  --pad-top: clamp(20px, 4.5vh, 56px);
+  --pad-bottom: clamp(32px, 8vh, 96px);
+
+  /* The hero card and every book page share this frame: as large as the
+     viewport allows, from the mockup ratio (707 × 484) up to 1.55 × its
+     height. */
+  --frame-h: min(
+    100svh - var(--pad-top) - var(--pad-bottom),
+    (100vw - var(--pad-x) * 2) * 484 / 707
+  );
+  --frame-w: min(100vw - var(--pad-x) * 2, var(--frame-h) * 1.55);
+
+  --stage-bg: radial-gradient(
+    ellipse 70% 90% at 50% 50%,
+    #a9a9a9 0%,
+    #a4a4a4 40%,
+    #979797 80%,
+    #8f8f8f 100%
+  );
+  --card-bg: radial-gradient(
+    ellipse 50% 110% at 52% 52%,
+    #d0d0d0 0%,
+    #cecece 25%,
+    #c6c6c6 60%,
+    #b7b7b7 100%
+  );
+  --green-deep: #2a3f34;
+  --green-ink: #2f4439;
+  --grey-green: #5d6d64;
+  --ink: #36453d;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* Menu links glide through the pages instead of jumping. No rubber band at
+   either end: the book stops dead on its first and last page. */
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100svh;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  background: #9b9b9b;
+  /* clip, not hidden: hidden would turn body into a scroll container and
+     break the sticky book */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

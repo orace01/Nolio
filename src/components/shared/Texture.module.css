@@ -1,0 +1,8 @@
+/* Glyphs filled with the leaf texture, like "lio." and the "0" in the hero */
+.textured {
+  color: transparent;
+  background: url("../../assets/hero/leaves-texture.jpg") 30% 40% /
+    calc(var(--u) * 260) auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
