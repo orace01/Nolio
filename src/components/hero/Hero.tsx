@@ -1,6 +1,6 @@
 import Image from "next/image";
 import heroLeaves from "@/assets/hero/hero-leaves.jpg";
-import { PAGE_IDS } from "@/components/site/navigation";
+import { NAV_IDS } from "@/components/site/navigation";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import styles from "./Hero.module.css";
 import { SOCIAL_ICONS } from "./SocialIcons";
@@ -64,7 +64,7 @@ export function Hero({ t, nav }: HeroProps) {
 
         <nav className={styles.nav} aria-label="Main">
           <ul className={styles.navList}>
-            {PAGE_IDS.map((id, index) => (
+            {NAV_IDS.map((id, index) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
@@ -77,12 +77,6 @@ export function Hero({ t, nav }: HeroProps) {
             ))}
           </ul>
         </nav>
-
-        <button type="button" className={styles.burger} aria-label={t.menu}>
-          <span />
-          <span />
-          <span />
-        </button>
       </header>
 
       <div className={styles.slider} aria-hidden="true">

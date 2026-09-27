@@ -1,0 +1,39 @@
+/* Centered on the grey panel and cut by the bottom edge, like the hero's "01" */
+.number {
+  position: absolute;
+  top: calc(var(--u) * 388.6);
+  right: 0;
+  left: calc(100% * 345 / 707);
+  display: flex;
+  justify-content: center;
+  font-size: calc(var(--u) * 160);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+}
+
+.digit {
+  background-size: calc(var(--u) * 320) auto;
+  filter: drop-shadow(
+    calc(var(--u) * -2.5) calc(var(--u) * 2.5) calc(var(--u) * 3)
+      rgb(0 0 0 / 0.3)
+  );
+}
+
+.digit:first-child {
+  background-position: 35% 45%;
+}
+
+.digit:last-child {
+  background-position: 70% 62%;
+}
+
+.white {
+  color: #fff;
+}
+
+.cta {
+  align-self: flex-start;
+  margin-top: calc(var(--u) * 20);
+}

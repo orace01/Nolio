@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, LOCALES } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { montserrat } from "../fonts";
 import "../globals.css";
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-});
 
 export const dynamicParams = false;
 
@@ -23,7 +18,10 @@ export async function generateMetadata({
   if (!hasLocale(lang)) return {};
 
   const { meta } = getDictionary(lang);
-  return { title: meta.title, description: meta.description };
+  return {
+    title: { default: meta.title, template: `%s | ${meta.title}` },
+    description: meta.description,
+  };
 }
 
 export default async function RootLayout({

@@ -3,6 +3,7 @@ import {
   DEFAULT_LOCALE,
   hasLocale,
   LOCALE_COOKIE,
+  LOCALE_HEADER,
   LOCALES,
   type Locale,
 } from "@/i18n/config";
@@ -33,10 +34,14 @@ function preferredLocale(request: NextRequest): Locale {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const localized = LOCALES.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
+  const locale = LOCALES.find(
+    (candidate) => pathname === `/${candidate}` || pathname.startsWith(`/${candidate}/`),
   );
-  if (localized) return;
+  if (locale) {
+    const headers = new Headers(request.headers);
+    headers.set(LOCALE_HEADER, locale);
+    return NextResponse.next({ request: { headers } });
+  }
 
   const url = request.nextUrl.clone();
   url.pathname = `/${preferredLocale(request)}${pathname === "/" ? "" : pathname}`;

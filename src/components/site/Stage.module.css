@@ -1,0 +1,22 @@
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  background: var(--stage-bg);
+}
+
+/* Long pages scroll: the card starts at the top and the backdrop stays put */
+.document {
+  place-items: start center;
+  background-attachment: fixed;
+}
+
+.topBar {
+  position: absolute;
+  top: calc(var(--pad-top) / 2);
+  right: calc((100% - var(--frame-w)) / 2);
+  z-index: 1;
+  transform: translateY(-50%);
+}

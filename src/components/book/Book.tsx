@@ -8,10 +8,11 @@ import {
   type ReactNode,
 } from "react";
 import { PAGE_IDS } from "@/components/site/navigation";
+import { SiteNav } from "@/components/site/SiteNav";
+import { TopBar } from "@/components/site/TopBar";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import styles from "./Book.module.css";
-import { LanguageSwitch } from "./LanguageSwitch";
 
 export type BookPage = {
   id: string;
@@ -35,9 +36,10 @@ type BookProps = {
   lang: Locale;
   nav: Dictionary["nav"];
   ui: Dictionary["book"];
+  top: Dictionary["top"];
 };
 
-export function Book({ pages, lang, nav, ui }: BookProps) {
+export function Book({ pages, lang, nav, ui, top }: BookProps) {
   const bookRef = useRef<HTMLElement>(null);
   const secondAnchorRef = useRef<HTMLDivElement>(null);
   const pendingRef = useRef<{ target: number; at: number } | null>(null);
@@ -161,12 +163,7 @@ export function Book({ pages, lang, nav, ui }: BookProps) {
           <ArrowIcon />
         </button>
 
-        <LanguageSwitch
-          lang={lang}
-          label={ui.language}
-          names={ui.languageNames}
-          className={styles.language}
-        />
+        <TopBar lang={lang} t={top} className={styles.topBar} />
       </div>
     </section>
   );
@@ -200,21 +197,7 @@ function PageChrome({ page, index, nav }: PageChromeProps) {
       <a href="#home" className={styles.brand}>
         Nolio.
       </a>
-      <nav className={styles.nav} aria-label="Main">
-        <ul className={styles.navList}>
-          {PAGE_IDS.map((id) => (
-            <li key={id}>
-              <a
-                href={`#${id}`}
-                className={styles.navLink}
-                aria-current={id === page.id ? "page" : undefined}
-              >
-                {nav[id]}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <SiteNav labels={nav} current={page.id} />
       <span className={styles.folio} aria-hidden="true">
         {String(index + 1).padStart(2, "0")}
       </span>

@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import { Book } from "@/components/book/Book";
 import { Hero } from "@/components/hero/Hero";
 import { AboutPage } from "@/components/pages/AboutPage";
-import { ContactPage } from "@/components/pages/ContactPage";
 import { FormatsPage } from "@/components/pages/FormatsPage";
+import { PricingPage } from "@/components/pages/PricingPage";
 import { ProcessPage } from "@/components/pages/ProcessPage";
+import { StartPage } from "@/components/pages/StartPage";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -20,6 +21,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         lang={lang}
         nav={dict.nav}
         ui={dict.book}
+        top={dict.top}
         pages={[
           {
             id: "home",
@@ -39,9 +41,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             content: <ProcessPage t={dict.process} />,
           },
           {
-            id: "contact",
-            title: dict.nav.contact,
-            content: <ContactPage t={dict.contact} />,
+            id: "pricing",
+            title: dict.nav.pricing,
+            content: <PricingPage lang={lang} t={dict.pricing} />,
+          },
+          {
+            id: "start",
+            title: dict.nav.start,
+            content: <StartPage lang={lang} t={dict.start} />,
             leftTone: "light",
           },
         ]}

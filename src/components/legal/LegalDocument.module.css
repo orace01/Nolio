@@ -1,0 +1,105 @@
+/* A card as wide as the book that grows with its text */
+.card {
+  /* same unit as the framed pages, taken from the frame height */
+  --u: calc(var(--frame-h) / 484);
+
+  position: relative;
+  width: var(--frame-w);
+  min-height: var(--frame-h);
+  padding: calc(var(--u) * 80) calc(var(--u) * 63.8) calc(var(--u) * 36)
+    calc(var(--u) * 105.5);
+  color: var(--green-deep);
+  background: var(--card-bg);
+  box-shadow: 0 calc(var(--u) * 56) calc(var(--u) * 48) calc(var(--u) * -20)
+    rgb(0 0 0 / 0.6);
+}
+
+.brand {
+  position: absolute;
+  top: calc(var(--u) * 22.8);
+  left: calc(var(--u) * 17.4);
+  font-size: calc(var(--u) * 13);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.header {
+  max-width: calc(var(--u) * 430);
+  margin-bottom: calc(var(--u) * 28);
+}
+
+.updated {
+  margin-top: calc(var(--u) * 8);
+  font-size: max(calc(var(--u) * 5.6), 12px);
+  color: var(--grey-green);
+}
+
+/* Section title on the left, text on the right, hairline between sections */
+.section {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 150) minmax(0, calc(var(--u) * 390));
+  gap: calc(var(--u) * 24);
+  padding: calc(var(--u) * 14) 0;
+  border-top: calc(var(--u) * 0.6) solid rgb(42 63 52 / 0.25);
+}
+
+.sectionTitle {
+  padding-top: 0.25em;
+}
+
+.sectionBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+}
+
+.paragraph {
+  font-size: max(calc(var(--u) * 6.2), 14px);
+  line-height: 1.7;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.placeholder {
+  padding: 0 0.15em;
+  color: var(--green-deep);
+  background: rgb(42 63 52 / 0.1);
+  border-bottom: 1px dashed rgb(42 63 52 / 0.6);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 10) calc(var(--u) * 24);
+  margin-top: calc(var(--u) * 20);
+  padding-top: calc(var(--u) * 14);
+  border-top: calc(var(--u) * 0.6) solid rgb(42 63 52 / 0.25);
+}
+
+.documents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 4) calc(var(--u) * 14);
+}
+
+.documents a {
+  font-size: max(calc(var(--u) * 5.4), 11px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.documents a:hover,
+.documents a[aria-current="page"] {
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.copyright {
+  color: var(--grey-green);
+}

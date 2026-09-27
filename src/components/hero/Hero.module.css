@@ -196,26 +196,6 @@
   background: currentColor;
 }
 
-.burger {
-  position: absolute;
-  top: calc(var(--u) * 24);
-  right: calc(var(--u) * 24.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: calc(var(--u) * 21.5);
-  height: calc(var(--u) * 14.6);
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.burger span {
-  height: calc(var(--u) * 1.6);
-  background: #2f4439;
-}
-
 /* Slide indicator, bottom left */
 
 .slider {

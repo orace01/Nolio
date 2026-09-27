@@ -1,0 +1,81 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 8);
+  margin-top: calc(var(--u) * 12);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+}
+
+.label {
+  font-size: max(calc(var(--u) * 6), 11px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.input {
+  height: max(calc(var(--u) * 22), 40px);
+  padding: 0 calc(var(--u) * 9);
+  border: calc(var(--u) * 0.8) solid var(--green-deep);
+  border-radius: 0;
+  font: inherit;
+  font-size: max(calc(var(--u) * 6.4), 14px);
+  color: var(--green-deep);
+  background: rgb(255 255 255 / 0.55);
+}
+
+.input::placeholder {
+  color: var(--grey-green);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.hint {
+  font-size: max(calc(var(--u) * 5.2), 11px);
+  color: var(--grey-green);
+}
+
+/* Terms checkbox on the sign-up page */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--u) * 6);
+  font-size: max(calc(var(--u) * 5.8), 12px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.consent input {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  accent-color: var(--green-deep);
+}
+
+.consent a {
+  font-weight: 700;
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.submit {
+  align-self: flex-start;
+  margin-top: calc(var(--u) * 3);
+}
+
+.status {
+  min-height: 1.5em;
+  font-size: max(calc(var(--u) * 5.8), 12px);
+  color: var(--green-deep);
+}

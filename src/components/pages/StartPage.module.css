@@ -1,4 +1,4 @@
-/* Same split as the hero: photo on the left, grey panel on the right */
+/* The back cover: same split as the hero, photo on the left, grey panel on the right */
 
 .photo {
   position: absolute;
@@ -52,7 +52,36 @@
   fill: currentColor;
 }
 
-.legal {
+.copyright {
   margin-top: calc(var(--u) * 8);
   color: var(--grey-green);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--u) * 10) calc(var(--u) * 18);
+  margin-top: calc(var(--u) * 18);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 4) calc(var(--u) * 12);
+  margin-top: calc(var(--u) * 14);
+}
+
+.legal a {
+  font-size: max(calc(var(--u) * 5.2), 11px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.legal a:hover {
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

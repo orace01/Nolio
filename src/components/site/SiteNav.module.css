@@ -1,0 +1,42 @@
+/* Same place and style as the menu of the hero */
+
+.nav {
+  position: absolute;
+  top: calc(var(--u) * 27.3);
+  right: calc(var(--u) * 63.8);
+  z-index: 1;
+  width: calc(var(--u) * 277.8);
+}
+
+.list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  display: block;
+  font-size: calc(var(--u) * 7.8);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+}
+
+.link[aria-current="page"] {
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * 9.7);
+  /* the trailing letter-spacing is not part of the word */
+  right: calc(0.07em - var(--u) * 1.5);
+  left: calc(var(--u) * -1.5);
+  height: calc(var(--u) * 1.8);
+  background: currentColor;
+}

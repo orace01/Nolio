@@ -1,0 +1,166 @@
+.layout {
+  position: absolute;
+  top: calc(var(--u) * 64);
+  right: calc(var(--u) * 63.8);
+  bottom: calc(var(--u) * 58);
+  left: calc(var(--u) * 105.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u) * 34);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: calc(var(--u) * 36);
+  align-items: end;
+}
+
+/* Billing switch: plain words, the chosen one underlined like the menu */
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--u) * 7);
+}
+
+.billing {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+}
+
+.billingOption {
+  padding: 4px 0;
+  border: 0;
+  font: inherit;
+  font-size: max(calc(var(--u) * 6), 11px);
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--grey-green);
+  background: none;
+  cursor: pointer;
+}
+
+.billingOption[aria-pressed="true"] {
+  font-weight: 700;
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-decoration-thickness: calc(var(--u) * 1.2);
+  text-underline-offset: calc(var(--u) * 3.5);
+}
+
+.billingOption:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
+.saving {
+  padding: calc(var(--u) * 1.8) calc(var(--u) * 4);
+  border: calc(var(--u) * 0.6) solid currentColor;
+  font-size: max(calc(var(--u) * 4.8), 10px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+}
+
+.note {
+  color: var(--grey-green);
+  text-align: right;
+}
+
+/* Plans: three columns under hairline rules, the recommended one bolder */
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 22);
+  list-style: none;
+}
+
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--u) * 10);
+  border-top: calc(var(--u) * 0.6) solid rgb(42 63 52 / 0.35);
+}
+
+.featured {
+  border-top: calc(var(--u) * 1.8) solid var(--green-deep);
+}
+
+.badge {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: calc(var(--u) * 4);
+  font-size: max(calc(var(--u) * 4.8), 10px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 6);
+}
+
+.amount {
+  font-size: calc(var(--u) * 30);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--green-deep);
+}
+
+.period {
+  font-size: max(calc(var(--u) * 5.6), 11px);
+  color: var(--grey-green);
+}
+
+.tagline {
+  margin-top: calc(var(--u) * 6);
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2.5);
+  margin: calc(var(--u) * 10) 0 calc(var(--u) * 14);
+  list-style: none;
+}
+
+.features li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 5);
+}
+
+.check {
+  flex: none;
+  width: calc(var(--u) * 5.5);
+  height: calc(var(--u) * 4.4);
+  fill: none;
+  stroke: var(--green-deep);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.check polyline {
+  vector-effect: non-scaling-stroke;
+}
+
+.cta {
+  align-self: flex-start;
+  margin-top: auto;
+}

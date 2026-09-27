@@ -1,0 +1,32 @@
+/* Small print of the account pages: chosen plan, forgotten password, switch page */
+
+.plan {
+  margin-top: calc(var(--u) * 9);
+  font-size: max(calc(var(--u) * 5.8), 12px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.plan strong {
+  color: var(--green-deep);
+}
+
+.plan a,
+.alt a,
+.forgot {
+  font-weight: 700;
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.forgot {
+  align-self: flex-start;
+  font-size: max(calc(var(--u) * 5.6), 12px);
+}
+
+.alt {
+  margin-top: calc(var(--u) * 8);
+  font-size: max(calc(var(--u) * 5.8), 12px);
+  color: var(--ink);
+}

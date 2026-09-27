@@ -1,0 +1,48 @@
+/* Square-cornered buttons, as the hero's style asks: filled or outlined */
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: max(calc(var(--u) * 22), 40px);
+  padding: 0 calc(var(--u) * 12);
+  border: calc(var(--u) * 0.8) solid var(--green-deep);
+  border-radius: 0;
+  font: inherit;
+  font-size: max(calc(var(--u) * 5.7), 11px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.primary {
+  color: #fff;
+  background: var(--green-deep);
+}
+
+.primary:hover {
+  background: var(--green-ink);
+}
+
+.secondary {
+  color: var(--green-deep);
+  background: transparent;
+}
+
+.secondary:hover {
+  color: #fff;
+  background: var(--green-deep);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}

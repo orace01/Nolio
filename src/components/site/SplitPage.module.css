@@ -1,0 +1,89 @@
+.frame {
+  container-type: size;
+  width: var(--frame-w);
+  height: var(--frame-h);
+}
+
+.card {
+  /* one pixel of the 484px-tall mockup, as in the book */
+  --u: calc(100cqh / 484);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--green-deep);
+  background: var(--card-bg);
+  box-shadow: 0 calc(var(--u) * 56) calc(var(--u) * 48) calc(var(--u) * -20)
+    rgb(0 0 0 / 0.6);
+}
+
+/* Photo panel, same split and shading as the hero */
+
+.photo {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(100% * 345 / 707);
+  overflow: hidden;
+}
+
+.photoImage {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 18 10 / 0.55), transparent 45%);
+}
+
+.side {
+  position: absolute;
+  bottom: calc(var(--u) * 40);
+  left: calc(var(--u) * 40);
+  z-index: 1;
+  color: #fff;
+}
+
+.sideKicker {
+  font-size: max(calc(var(--u) * 7), 11px);
+  font-weight: 300;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sideTitle {
+  margin-top: calc(var(--u) * 3.9);
+  font-size: calc(var(--u) * 27.5);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.brand {
+  position: absolute;
+  top: calc(var(--u) * 22.8);
+  left: calc(var(--u) * 17.4);
+  z-index: 1;
+  font-size: calc(var(--u) * 13);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+/* Form panel on the grey side */
+
+.panel {
+  position: absolute;
+  top: calc(var(--u) * 58);
+  right: calc(var(--u) * 63.8);
+  bottom: calc(var(--u) * 30);
+  left: calc(100% * 345 / 707 + var(--u) * 40);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

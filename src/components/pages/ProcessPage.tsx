@@ -32,7 +32,7 @@ export function ProcessPage({ t }: { t: Dictionary["process"] }) {
         </ol>
       </div>
 
-      <ArrowLink href="#contact" className={page.next}>
+      <ArrowLink href="#pricing" className={page.next}>
         {t.next}
       </ArrowLink>
     </>

@@ -1,13 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
 import leaves from "@/assets/hero/hero-leaves.jpg";
 import { SOCIAL_ICONS } from "@/components/hero/SocialIcons";
 import { ArrowLink } from "@/components/shared/ArrowLink";
+import button from "@/components/shared/Button.module.css";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import page from "./page.module.css";
-import styles from "./ContactPage.module.css";
-import { WaitlistForm } from "./WaitlistForm";
+import styles from "./StartPage.module.css";
 
-export function ContactPage({ t }: { t: Dictionary["contact"] }) {
+export function StartPage({ lang, t }: { lang: Locale; t: Dictionary["start"] }) {
   return (
     <>
       <div className={styles.photo}>
@@ -19,7 +21,7 @@ export function ContactPage({ t }: { t: Dictionary["contact"] }) {
           className={styles.photoImage}
         />
         <span className={`${page.bigNumber} ${styles.bigNumber}`} aria-hidden="true">
-          05
+          06
         </span>
       </div>
 
@@ -28,7 +30,12 @@ export function ContactPage({ t }: { t: Dictionary["contact"] }) {
         <h2 className={page.title}>{t.title}</h2>
         <p className={page.lead}>{t.lead}</p>
 
-        <WaitlistForm t={t.form} />
+        <div className={styles.actions}>
+          <Link href={`/${lang}/signup`} className={button.primary}>
+            {t.primary}
+          </Link>
+          <ArrowLink href={`/${lang}/login`}>{t.secondary}</ArrowLink>
+        </div>
 
         <div className={styles.follow}>
           <span className={page.label}>{t.follow}</span>
@@ -48,7 +55,13 @@ export function ContactPage({ t }: { t: Dictionary["contact"] }) {
             ))}
           </ul>
         </div>
-        <p className={`${page.small} ${styles.legal}`}>{t.legal}</p>
+
+        <nav className={styles.legal} aria-label={t.legalLabel}>
+          <Link href={`/${lang}/legal`}>{t.legalLinks.legal}</Link>
+          <Link href={`/${lang}/privacy`}>{t.legalLinks.privacy}</Link>
+          <Link href={`/${lang}/terms`}>{t.legalLinks.terms}</Link>
+        </nav>
+        <p className={`${page.small} ${styles.copyright}`}>{t.copyright}</p>
       </div>
 
       <ArrowLink href="#home" className={page.next}>
