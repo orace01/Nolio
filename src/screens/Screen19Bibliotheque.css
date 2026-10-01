@@ -1,0 +1,11 @@
+/* Styles propres à l'écran « Bibliothèque » */
+.s-19-bibliotheque .content { display: flex; flex-direction: column; gap: 30px; min-height: 0; padding: 36px 56px; overflow: auto; }
+    .s-19-bibliotheque .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    .s-19-bibliotheque .usage { display: flex; align-items: center; gap: 26px; }
+    .s-19-bibliotheque .usage .bar { width: 140px; margin-top: 8px; }
+    .s-19-bibliotheque .shelf { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+    .s-19-bibliotheque .book .cover .title { font-size: 22px !important; }
+    .s-19-bibliotheque .book .meta { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 14px; }
+    .s-19-bibliotheque .book .name { font-size: 14px; font-weight: 700; color: var(--green); }
+    .s-19-bibliotheque .new { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; aspect-ratio: 3 / 4; border: 1.4px dashed var(--line-strong); text-align: center; color: var(--green); }
+    .s-19-bibliotheque .new .plus { width: 36px; height: 36px; }

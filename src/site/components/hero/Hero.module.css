@@ -1,0 +1,513 @@
+/*
+ * Every measurement below is taken from the reference mockup, where the card
+ * is 707 × 484 px. --u is one of those pixels, derived from the card height:
+ * the card may grow wider than the mockup, so horizontal positions are
+ * anchored to the left edge, the photo split, the grey panel or the right edge.
+ */
+
+/* The card is the book's cover: the book provides the stage, the frame
+   (the size container) and the shadow. */
+.card {
+  --u: calc(100cqh / 484);
+  --split: calc(100cqw * 345 / 707);
+  --panel-center: calc((100cqw + var(--split)) / 2);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: #fff;
+  background: var(--card-bg);
+}
+
+/* Photo panel */
+
+.photo {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--split);
+}
+
+.photoImage {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 18 10 / 0.55), transparent 45%);
+}
+
+/* Glyphs filled with the leaf texture. The layer covers the whole card so
+   every textured glyph samples the same image plane. */
+
+.textured {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  background: url("../../assets/hero/leaves-texture.jpg") 50% 50% / cover
+    no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(
+    calc(var(--u) * -1) calc(var(--u) * 1.5) calc(var(--u) * 1.5)
+      rgb(0 0 0 / 0.3)
+  );
+}
+
+/* Big "Nolio.": white over the photo, textured over the grey panel. The
+   split falls in the gap between "o" and "l". */
+
+.word {
+  position: absolute;
+  inset: 0;
+  font-size: calc(var(--u) * 101);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.004em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.wordLight,
+.wordTextured {
+  position: absolute;
+  inset: 0;
+  padding: calc(var(--u) * 173.3) 0 0 calc(var(--split) - var(--u) * 149.5);
+}
+
+.wordLight {
+  clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
+
+.wordTextured {
+  clip-path: inset(0 0 0 var(--split));
+  background-size: calc(var(--u) * 400) auto;
+  background-position: calc(var(--split) - var(--u) * 36) calc(var(--u) * -19);
+}
+
+/* Big "01" cut by the bottom edge, centred on the grey panel */
+
+.number {
+  position: absolute;
+  inset: 0;
+  font-size: calc(var(--u) * 225);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.numberZero {
+  padding: calc(var(--u) * 368.3) 0 0
+    calc(var(--panel-center) - var(--u) * 117.8);
+  background-size: calc(var(--u) * 400) auto;
+  background-position: calc(var(--panel-center) - var(--u) * 209)
+    calc(var(--u) * -30);
+  filter: drop-shadow(
+    calc(var(--u) * -2.5) calc(var(--u) * 2.5) calc(var(--u) * 3)
+      rgb(0 0 0 / 0.3)
+  );
+}
+
+.numberOne {
+  position: absolute;
+  top: calc(var(--u) * 368.3);
+  left: calc(var(--panel-center) + var(--u) * 34.5);
+  filter: drop-shadow(
+    calc(var(--u) * -2.5) calc(var(--u) * 2.5) calc(var(--u) * 3)
+      rgb(0 0 0 / 0.3)
+  );
+}
+
+/* Top bar */
+
+.follow {
+  position: absolute;
+  top: calc(var(--u) * 27.75);
+  left: calc(var(--u) * 17.4);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 34);
+  font-size: calc(var(--u) * 6.7);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.brand {
+  text-transform: uppercase;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 6);
+  list-style: none;
+}
+
+.socials a {
+  display: block;
+}
+
+.socials svg {
+  display: block;
+  height: calc(var(--u) * 6);
+  fill: currentColor;
+}
+
+.nav {
+  position: absolute;
+  top: calc(var(--u) * 27.3);
+  right: calc(var(--u) * 63.8);
+  width: calc(var(--u) * 277.8);
+}
+
+.navList {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.navLink {
+  position: relative;
+  display: block;
+  font-size: calc(var(--u) * 7.8);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #5d6d64;
+}
+
+.navLink[aria-current="page"] {
+  font-weight: 700;
+  color: #2a3f34;
+}
+
+.navLink[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * 9.7);
+  /* the trailing letter-spacing is not part of the word */
+  right: calc(0.07em - var(--u) * 1.5);
+  left: calc(var(--u) * -1.5);
+  height: calc(var(--u) * 1.8);
+  background: currentColor;
+}
+
+/* Slide indicator, bottom left */
+
+.slider {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.slideIndex {
+  position: absolute;
+  top: calc(var(--u) * 367.7);
+  left: calc(var(--u) * 39.1);
+  font-size: calc(var(--u) * 40);
+  font-weight: 500;
+  line-height: 1;
+  color: rgb(255 255 255 / 0.42);
+}
+
+.slideLabel {
+  position: absolute;
+  top: calc(var(--u) * 385.3);
+  left: calc(var(--u) * 12.8);
+  font-size: calc(var(--u) * 4.3);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chevronUp,
+.chevronDown {
+  position: absolute;
+  left: calc(var(--u) * 85);
+  width: calc(var(--u) * 6);
+  height: calc(var(--u) * 3);
+  fill: none;
+  stroke: rgb(255 255 255 / 0.8);
+  stroke-width: 0.8;
+}
+
+.chevronUp {
+  top: calc(var(--u) * 375.6);
+}
+
+.chevronDown {
+  top: calc(var(--u) * 395.6);
+}
+
+.dots {
+  position: absolute;
+  top: calc(var(--u) * 407.75);
+  left: calc(var(--u) * 12.85);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 5);
+}
+
+.dotActive,
+.dot {
+  width: calc(var(--u) * 7.5);
+  height: calc(var(--u) * 7.5);
+  border-radius: 50%;
+}
+
+.dotActive {
+  background: rgb(255 255 255 / 0.55);
+}
+
+.dot {
+  border: calc(var(--u) * 0.8) solid rgb(255 255 255 / 0.6);
+}
+
+.dotLine {
+  width: calc(var(--u) * 11.9);
+  height: calc(var(--u) * 0.8);
+  background: rgb(255 255 255 / 0.5);
+}
+
+.dotGroup {
+  display: flex;
+  gap: calc(var(--u) * 6.2);
+}
+
+/* Intro copy, bottom left */
+
+.intro {
+  position: absolute;
+  bottom: calc(var(--u) * 21.2);
+  left: calc(var(--u) * 105.5);
+  width: calc(var(--u) * 229);
+}
+
+.kicker {
+  font-size: calc(var(--u) * 7);
+  font-weight: 300;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: calc(var(--u) * 3.9);
+  font-size: calc(var(--u) * 27.5);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.lead {
+  margin-top: calc(var(--u) * 5);
+  font-size: max(calc(var(--u) * 5.3), 11px);
+  line-height: max(calc(var(--u) * 9.75), 1.6em);
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 20);
+  width: fit-content;
+  margin-top: calc(var(--u) * 9.45);
+  font-size: max(calc(var(--u) * 5.7), 9px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.arrow {
+  width: calc(var(--u) * 74);
+  height: calc(var(--u) * 6);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.9;
+}
+
+/* On small screens keep the pure proportions instead of the legibility
+   floors, otherwise the copy would outgrow the photo panel. */
+@container (max-width: 600px) {
+  .lead {
+    font-size: calc(var(--u) * 5.3);
+  }
+
+  .more {
+    font-size: calc(var(--u) * 5.7);
+  }
+}
+
+/*
+ * Phones: the cover read from top to bottom, as the app's login screen. The
+ * photo becomes a banner carrying the follow links and the title; "Nolio."
+ * sits across its bottom edge, white on the photo and textured on the grey;
+ * the copy, the link and the "01" cut by the bottom edge follow.
+ */
+@media (max-width: 760px) {
+  .card {
+    --u: 1.1px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    /* the photo takes the top half of the screen, as on the login screen */
+    grid-template-rows: 50svh auto auto auto auto;
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .card > header {
+    display: contents;
+  }
+
+  /* Everything sits in the one column: the texts of the banner lie over
+     the photo instead of opening a second column */
+  .photo,
+  .follow,
+  .kicker,
+  .title,
+  .word,
+  .lead,
+  .more,
+  .number {
+    grid-column: 1;
+  }
+
+  .photo {
+    position: relative;
+    grid-row: 1;
+    grid-column: 1;
+    inset: auto;
+    width: auto;
+  }
+
+  /* Left out on phones: the menu is in the burger, the social links are on
+     the last page */
+  .nav,
+  .slider,
+  .follow {
+    display: none;
+  }
+
+  .follow {
+    position: relative;
+    grid-row: 1;
+    align-self: start;
+    top: auto;
+    left: auto;
+    z-index: 1;
+    gap: 18px;
+    padding: 24px 76px 0 20px;
+    font-size: 11px;
+  }
+
+  .socials svg {
+    height: 11px;
+  }
+
+  .intro {
+    display: contents;
+  }
+
+  /* Kicker and title at the bottom of the photo, above the half of
+     "Nolio." that overlaps it */
+  .kicker {
+    position: relative;
+    grid-row: 1;
+    align-self: end;
+    z-index: 1;
+    margin: 0 20px 112px;
+    font-size: 12px;
+  }
+
+  .title {
+    position: relative;
+    grid-row: 1;
+    align-self: end;
+    z-index: 1;
+    margin: 0 20px;
+    padding-bottom: 62px;
+    white-space: nowrap;
+    font-size: 40px;
+  }
+
+  /* "Nolio." across the bottom edge of the photo */
+  /* "Nolio." centred across the edge between the photo and the page */
+  .word {
+    position: relative;
+    grid-row: 2;
+    justify-self: center;
+    inset: auto;
+    z-index: 1;
+    margin-top: -0.5em;
+    font-size: 96px;
+  }
+
+  .wordLight,
+  .wordTextured {
+    padding: 0;
+  }
+
+  .wordLight {
+    clip-path: inset(0 0 calc(100% - 0.5em) 0);
+  }
+
+  .wordTextured {
+    position: relative;
+    display: block;
+    clip-path: inset(0.5em 0 0 0);
+    background-size: 420px auto;
+    background-position: 50% 30%;
+  }
+
+  .lead {
+    grid-row: 3;
+    margin: 18px 20px 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .more {
+    grid-row: 4;
+    gap: 18px;
+    margin: 22px 20px 0;
+    font-size: 11.5px;
+    color: var(--green-deep);
+  }
+
+  .arrow {
+    width: 60px;
+    height: 6px;
+  }
+
+  /* Big "01" cut by the bottom edge */
+  .number {
+    position: relative;
+    grid-row: 5;
+    inset: auto;
+    display: flex;
+    justify-content: flex-end;
+    height: 0.62em;
+    margin-top: 16px;
+    padding-right: 20px;
+    overflow: hidden;
+    font-size: 150px;
+  }
+
+  .numberZero {
+    position: relative;
+    inset: auto;
+    padding: 0;
+    background-size: 420px auto;
+    background-position: 50% 50%;
+  }
+
+  .numberOne {
+    position: static;
+  }
+}

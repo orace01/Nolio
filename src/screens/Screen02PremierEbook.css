@@ -1,0 +1,7 @@
+/* Styles propres à l'écran « Votre premier ebook » */
+.s-02-premier-ebook .toc { border-bottom: 1px solid var(--line); }
+    .s-02-premier-ebook .toc li { display: grid; grid-template-columns: 64px 1fr auto; align-items: baseline; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .s-02-premier-ebook .toc .n { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .s-02-premier-ebook .toc li:nth-child(even) .n { background-position: 88% 38%; }
+    .s-02-premier-ebook .toc .step { font-size: 15px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--green); }
+    .s-02-premier-ebook .toc .time { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--grey-green); white-space: nowrap; }

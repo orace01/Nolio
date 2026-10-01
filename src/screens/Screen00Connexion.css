@@ -1,0 +1,79 @@
+/* Styles propres à l'écran « Connexion » */
+.s-00-connexion .photo {
+      position: relative;
+      background: url("/assets/hero-leaves.jpg") 50% 30% / cover;
+    }
+
+    .s-00-connexion .photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgb(0 18 10 / 0.55), transparent 45%);
+    }
+
+    .s-00-connexion .photo .brand {
+      position: absolute;
+      top: 34px;
+      left: 34px;
+      z-index: 1;
+      font-size: 21px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .s-00-connexion .photo .side {
+      position: absolute;
+      bottom: 56px;
+      left: 56px;
+      z-index: 1;
+      color: #fff;
+    }
+
+    .s-00-connexion .photo .side p:first-child {
+      font-size: 12px;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .s-00-connexion .photo .side p:last-child {
+      margin-top: 6px;
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .s-00-connexion .panel-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: min(420px, 100%);
+      margin: 0 auto;
+    }
+
+    .s-00-connexion .panel-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .s-00-connexion .forgot {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .s-00-connexion .alt {
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    .s-00-connexion .alt a {
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }

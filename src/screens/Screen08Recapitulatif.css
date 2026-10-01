@@ -1,0 +1,6 @@
+/* Styles propres à l'écran « Récapitulatif » */
+.s-08-recapitulatif .recap > div { display: grid; grid-template-columns: 180px 1fr auto; gap: 20px; align-items: baseline; padding: 17px 0; border-top: 1px solid var(--line); }
+    .s-08-recapitulatif .recap > div:last-child { border-bottom: 1px solid var(--line); }
+    .s-08-recapitulatif .recap dt { font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey-green); }
+    .s-08-recapitulatif .recap dd { font-size: 16px; font-weight: 600; line-height: 1.45; color: var(--green); }
+    .s-08-recapitulatif .recap a { font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey-green); text-decoration: underline; text-underline-offset: 4px; }

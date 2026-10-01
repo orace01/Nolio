@@ -1,0 +1,7 @@
+/* Styles propres à l'écran « Type d’écriture » */
+.s-12-ecriture .quote { font-family: "Source Serif 4", serif; font-size: 17px; font-style: italic; line-height: 1.5; color: var(--green); }
+    .s-12-ecriture .address { display: flex; align-items: center; gap: 18px; margin-top: 26px; }
+    .s-12-ecriture .segmented { display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; width: 320px; border: 1px solid var(--line-strong); }
+    .s-12-ecriture .segmented span { display: grid; place-items: center; min-height: 38px; font-size: 12px; font-weight: 600; color: var(--green); }
+    .s-12-ecriture .segmented span + span { border-left: 1px solid var(--line-strong); }
+    .s-12-ecriture .segmented .on { color: #fff; background: var(--green); }

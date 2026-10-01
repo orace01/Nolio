@@ -1,0 +1,7 @@
+/* Styles propres à l'écran « Couleurs et police » */
+.s-11-couleurs .theme .preview { padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); }
+    .s-11-couleurs .swatches { display: flex; gap: 6px; }
+    .s-11-couleurs .swatches span { width: 22px; height: 22px; border: 1px solid rgb(0 0 0 / 0.12); }
+    .s-11-couleurs .sample-title { margin-top: 10px; font-size: 18px; line-height: 1.1; }
+    .s-11-couleurs .sample-body { margin-top: 6px; font-size: 13px; line-height: 1.5; color: #2b312d; }
+    .s-11-couleurs .custom .preview { display: grid; place-items: center; min-height: 104px; border-style: dashed; background: transparent; font-size: 28px; color: var(--green); }

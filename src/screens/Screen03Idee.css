@@ -1,0 +1,4 @@
+/* Styles propres à l'écran « Votre idée » */
+.s-03-idee .examples { margin-top: 24px; }
+    .s-03-idee .examples ul { margin-top: 10px; }
+    .s-03-idee .examples li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--grey-green); }

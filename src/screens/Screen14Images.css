@@ -1,0 +1,12 @@
+/* Styles propres à l'écran « Images » */
+.s-14-images .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .s-14-images .drop { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 22px; border: 1.2px dashed var(--line-strong); text-align: center; color: var(--green); }
+    .s-14-images .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .s-14-images .thumbs span { aspect-ratio: 1; border: 1px solid var(--line); background: url("/assets/hero-leaves.jpg") center / cover; }
+    .s-14-images .thumbs span:nth-child(2) { background-position: 20% 80%; }
+    .s-14-images .thumbs span:nth-child(3) { display: grid; place-items: end center; background: #b9c3bd; }
+    .s-14-images .thumbs svg { width: 70%; fill: #eef1ef; }
+    .s-14-images .locked { position: relative; }
+    .s-14-images .generated { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; opacity: 0.45; }
+    .s-14-images .generated span { display: grid; place-items: center; aspect-ratio: 4 / 3; border: 1px solid var(--line); background: var(--paper); }
+    .s-14-images .generated svg { width: 80%; fill: none; stroke: var(--green); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }

@@ -1,0 +1,8 @@
+/* Styles propres à l'écran « Style » */
+.s-09-style .styles .option { padding: 14px 16px; }
+    .s-09-style .styles .preview { display: grid; place-items: center; height: 100px; margin: -2px -4px 4px; background: rgb(255 255 255 / 0.28); }
+    .s-09-style .styles .cover { width: 66px; }
+    .s-09-style .styles .cover .title { font-size: 8px; }
+    .s-09-style .styles .cover.studio .big { font-size: 28px; }
+    .s-09-style .own { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 16px; padding: 16px 20px; border: 1.2px dashed var(--line-strong); }
+    .s-09-style .own b { color: var(--green); }

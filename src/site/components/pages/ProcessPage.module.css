@@ -1,0 +1,95 @@
+.layout {
+  position: absolute;
+  top: calc(var(--u) * 64);
+  right: calc(var(--u) * 63.8);
+  bottom: calc(var(--u) * 58);
+  left: calc(var(--u) * 105.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u) * 58);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: calc(var(--u) * 36);
+  align-items: end;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: calc(var(--u) * 18);
+  list-style: none;
+}
+
+.stepHead {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+}
+
+.stepNumber {
+  font-size: calc(var(--u) * 44);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background-size: calc(var(--u) * 300) auto;
+}
+
+.steps li:nth-child(2) .stepNumber {
+  background-position: 55% 30%;
+}
+
+.steps li:nth-child(3) .stepNumber {
+  background-position: 70% 55%;
+}
+
+.steps li:nth-child(4) .stepNumber {
+  background-position: 45% 65%;
+}
+
+.steps li:nth-child(5) .stepNumber {
+  background-position: 20% 50%;
+}
+
+/* Hairline joining each step to the next, like the hero's slide line */
+.stepLine {
+  flex: 1;
+  height: calc(var(--u) * 0.8);
+  margin-right: calc(var(--u) * -18);
+  background: rgb(42 63 52 / 0.35);
+}
+
+.stepTitle {
+  margin-top: calc(var(--u) * 12);
+}
+
+.stepText {
+  margin-top: calc(var(--u) * 5);
+}
+
+/* Phones: one column, with the page margins of the login screen */
+@media (max-width: 760px) {
+  .layout {
+    position: static;
+    padding: 84px 20px 0;
+  }
+
+  .head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .stepLine {
+    display: none;
+  }
+}

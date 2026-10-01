@@ -1,0 +1,316 @@
+/* Scroll track: one step of vertical scroll turns one page */
+
+.book {
+  --p: 0;
+  --step: 120svh;
+
+  /* Full screen: each page fills the window, with no grey margin around it */
+  --pad-x: 0px;
+  --pad-top: 0px;
+  --pad-bottom: 0px;
+  --frame-w: 100%;
+  --frame-h: 100svh;
+
+  position: relative;
+  height: calc((var(--count) - 1) * var(--step) + 100svh);
+}
+
+/* Targets for the menu links: the scroll position where each page lies open.
+   Kept 1px tall so the last one never pushes past the end of the book. */
+.anchor {
+  position: absolute;
+  top: calc(var(--k) * var(--step));
+  left: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.viewport {
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  overflow: hidden;
+  background: var(--stage-bg);
+}
+
+.frame {
+  container-type: size;
+  width: var(--frame-w);
+  height: var(--frame-h);
+}
+
+.pages {
+  /* one pixel of the 484px-tall mockup, as in the hero */
+  --u: calc(100cqh / 484);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: calc(var(--u) * 7000);
+}
+
+/* Carries the card shadow once for the whole stack */
+.base {
+  position: absolute;
+  inset: 0;
+  background: var(--card-bg);
+  box-shadow: 0 calc(var(--u) * 56) calc(var(--u) * 48) calc(var(--u) * -20)
+    rgb(0 0 0 / 0.6);
+}
+
+/*
+ * --t goes from 0 to 1 while this page turns away around its left edge.
+ * --in goes from 0 to 1 while the previous page turns and uncovers this one.
+ */
+.page {
+  --t: clamp(0, var(--p) - var(--i), 1);
+  --in: clamp(0, var(--p) - var(--i) + 1, 1);
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--green-deep);
+  background: var(--card-bg);
+  transform-origin: 0 50%;
+  transform: rotateY(calc(var(--t) * -96deg));
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Light falls off the turning page and lifts from the uncovered one */
+.page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #0b120e;
+  opacity: calc(var(--t) * 0.3 + (1 - var(--in)) * 0.3);
+  pointer-events: none;
+}
+
+/* The uncovered page's content glides in from the right */
+.content {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc((1 - var(--in)) * 4%));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    transform: none;
+    opacity: calc(1 - var(--t));
+  }
+
+  .content {
+    transform: none;
+  }
+}
+
+/* Previous and next arrows, centered in the grey margins on each side of the
+   frame, level with its middle */
+
+.arrow {
+  position: absolute;
+  top: calc(var(--pad-top) + var(--frame-h) / 2);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(40px, 4.5vw, 72px);
+  height: 44px;
+  padding: 0;
+  border: 0;
+  color: var(--green-deep);
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+/* No margin to sit in at full screen: the arrows sit inside the page edges */
+.previous {
+  left: calc(var(--frame-h) * 30 / 484);
+}
+
+.next {
+  left: calc(100% - var(--frame-h) * 30 / 484);
+}
+
+.arrow svg {
+  width: 100%;
+  height: 12px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition: translate 0.3s ease;
+}
+
+.arrow svg * {
+  vector-effect: non-scaling-stroke;
+}
+
+.previous svg {
+  scale: -1 1;
+}
+
+.next:hover svg {
+  translate: 5px 0;
+}
+
+.previous:hover svg {
+  translate: -5px 0;
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 4px;
+}
+
+/* Nothing to turn in that direction */
+.arrow:disabled {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Account links and language switch, in the top right corner of the page,
+   above the menu and aligned with its right end */
+.topBar {
+  position: absolute;
+  top: calc(var(--frame-h) * 9 / 484);
+  right: calc(var(--frame-h) * 63.8 / 484);
+  z-index: 1;
+}
+
+/* Running head, the same on every page */
+
+.brand {
+  position: absolute;
+  top: calc(var(--u) * 22.8);
+  left: calc(var(--u) * 17.4);
+  z-index: 1;
+  font-size: calc(var(--u) * 13);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.folio {
+  position: absolute;
+  top: calc(var(--u) * 24.9);
+  right: calc(var(--u) * 24.5);
+  z-index: 1;
+  font-size: calc(var(--u) * 12);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Page position, drawn like the hero's slide dots */
+.dots {
+  position: absolute;
+  bottom: calc(var(--u) * 22);
+  left: calc(var(--u) * 17.4);
+  z-index: 1;
+  display: flex;
+  gap: calc(var(--u) * 6.2);
+}
+
+.dot {
+  width: calc(var(--u) * 7.5);
+  height: calc(var(--u) * 7.5);
+  border: calc(var(--u) * 0.8) solid currentColor;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.dotCurrent {
+  background: currentColor;
+  opacity: 1;
+}
+
+.leftLight .brand,
+.leftLight .dots {
+  color: #fff;
+}
+
+/* The floating menu button, phones only */
+.mobileMenu {
+  display: none;
+}
+
+/*
+ * Phones: the book becomes one long page. The pages are stacked in reading
+ * order and scroll like any page; each lays out its content in one column,
+ * photo first, as the app's login screen does. The running head, the arrows
+ * and the top bar give way to the floating menu.
+ */
+@media (max-width: 760px) {
+  .book {
+    height: auto;
+  }
+
+  .viewport {
+    position: static;
+    display: block;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    background: none;
+  }
+
+  .frame {
+    container-type: inline-size;
+    width: 100%;
+    height: auto;
+  }
+
+  .pages {
+    /* one pixel of the mockup, fixed so the type stays readable */
+    --u: 1.1px;
+
+    height: auto;
+    perspective: none;
+  }
+
+  .base,
+  .page::after,
+  .arrow,
+  .topBar,
+  .page > :not(.content) {
+    display: none;
+  }
+
+  .page {
+    position: relative;
+    inset: auto;
+    overflow: visible;
+    transform: none;
+    will-change: auto;
+  }
+
+  .page + .page {
+    border-top: 1px solid rgb(42 63 52 / 0.25);
+  }
+
+  .content {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    transform: none;
+  }
+
+  .mobileMenu {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 20;
+    display: block;
+    color: #fff;
+  }
+}

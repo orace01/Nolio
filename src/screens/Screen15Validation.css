@@ -1,0 +1,14 @@
+/* Styles propres à l'écran « Validation » */
+.s-15-validation .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .s-15-validation .outline li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--green); }
+    .s-15-validation .outline li:last-child { border-bottom: 1px solid var(--line); }
+    .s-15-validation .outline .n { font-weight: 700; }
+    .s-15-validation .outline .meta { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--grey-green); }
+    .s-15-validation .mini-video { position: relative; width: 20px; height: 14px; background: var(--green); }
+    .s-15-validation .mini-video::after { content: ""; position: absolute; top: 50%; left: 50%; border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; border-left: 5px solid #fff; transform: translate(-35%, -50%); }
+    .s-15-validation .look { display: grid; grid-template-columns: 150px 220px; gap: 20px; align-items: start; }
+    .s-15-validation .look .pg { font-size: 11px; box-shadow: 0 14px 22px -14px rgb(0 0 0 / 0.5); }
+    .s-15-validation .choices { margin-top: 18px; }
+    .s-15-validation .choices div { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--green); }
+    .s-15-validation .choices dt { color: var(--grey-green); }
+    .s-15-validation .choices dd { font-weight: 700; }

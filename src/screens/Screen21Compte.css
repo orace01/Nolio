@@ -1,0 +1,11 @@
+/* Styles propres à l'écran « Compte et abonnement » */
+.s-21-compte .content { display: flex; flex-direction: column; gap: 24px; min-height: 0; padding: 32px 56px 28px; overflow: auto; }
+    .s-21-compte .tabs { display: flex; gap: 26px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey-green); }
+    .s-21-compte .tabs .on { font-weight: 700; color: var(--green); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 16px; }
+    .s-21-compte .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .s-21-compte .plan { display: flex; flex-direction: column; gap: 14px; padding: 22px; }
+    .s-21-compte .plan.pro { border: 1.6px solid var(--green); background: var(--surface-strong); }
+    .s-21-compte .plan-head { display: flex; align-items: baseline; justify-content: space-between; }
+    .s-21-compte .price b { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: var(--green); }
+    .s-21-compte .perks li { display: flex; align-items: baseline; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--green); }
+    .s-21-compte .plan .btn { align-self: flex-start; margin-top: auto; }

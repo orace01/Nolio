@@ -1,0 +1,288 @@
+/*
+ * Versions responsives des écrans. Les maquettes sont dessinées pour un écran
+ * de PC ; en dessous de ces largeurs, la carte occupe tout l'écran et les
+ * contenus passent en colonne. Règles CSS simples, une largeur à la fois.
+ */
+
+/* Partout : les colonnes de la carte ne s'élargissent jamais au-delà de
+   l'écran, même quand une ligne (menu, étapes) est plus longue */
+.app {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.app > * {
+  min-width: 0;
+}
+
+/* Tablettes */
+@media (max-width: 1024px) {
+  .stage {
+    padding: 16px 16px 64px;
+  }
+
+  .app {
+    height: auto;
+    min-height: calc(100svh - 80px);
+  }
+
+  .options.three,
+  .options.four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Téléphones */
+@media (max-width: 760px) {
+  .stage {
+    padding: 0;
+  }
+
+  .app {
+    min-height: 100svh;
+    box-shadow: none;
+  }
+
+  .app.split {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  /* Barre du haut : le logo et le compte, puis le menu ou les étapes sur
+     une ligne qui défile */
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    height: auto;
+    padding: 14px 16px;
+  }
+
+  .menu,
+  .stepper {
+    order: 3;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .menu {
+    gap: 20px;
+  }
+
+  .stepper {
+    gap: 16px;
+  }
+
+  .user {
+    gap: 10px;
+  }
+
+  .quota {
+    font-size: 9.5px;
+  }
+
+  /* Contenu d'une page : une colonne, place pour la barre de la maquette */
+  .flow {
+    padding: 24px 16px 88px;
+    overflow: visible;
+  }
+
+  .question {
+    font-size: 26px;
+  }
+
+  .h1 {
+    font-size: 26px;
+  }
+
+  .lead {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .flow-body {
+    margin-top: 20px;
+  }
+
+  .options,
+  .options.three,
+  .options.four {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .option {
+    padding: 16px 18px;
+  }
+
+  .big-textarea {
+    min-height: 160px;
+    padding: 16px;
+    font-size: 15px;
+  }
+
+  .flow-actions {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  /* Barre de la maquette : sans le titre, centrée en bas */
+  .proto {
+    bottom: 10px;
+    gap: 4px;
+    padding: 0 4px;
+  }
+
+  .proto .where {
+    display: none;
+  }
+}
+
+/*
+ * Téléphones, écran par écran : les blocs côte à côte passent en colonne.
+ */
+@media (max-width: 760px) {
+  /* 00 · Connexion : la photo devient un bandeau au-dessus du formulaire */
+  div.s-00-connexion .photo {
+    min-height: 34svh;
+  }
+
+  div.s-00-connexion .photo .brand {
+    top: 20px;
+    left: 20px;
+  }
+
+  div.s-00-connexion .photo .side {
+    bottom: 22px;
+    left: 20px;
+  }
+
+  div.s-00-connexion .photo .side p:last-child {
+    font-size: 30px;
+  }
+
+  div.s-00-connexion .panel-form {
+    padding: 28px 20px 96px;
+  }
+
+  /* 08 · Récapitulatif : l'intitulé au-dessus, la réponse et « Modifier » dessous */
+  div.s-08-recapitulatif .recap > div {
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+  }
+
+  div.s-08-recapitulatif .recap dt {
+    grid-column: 1 / -1;
+  }
+
+  /* 10 · Option Premium : la fenêtre prend l'écran, sans la photo */
+  div.s-10-option-premium .dialog {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 24px);
+    max-height: calc(100svh - 24px);
+    overflow: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  div.s-10-option-premium .visual {
+    display: none;
+  }
+
+  div.s-10-option-premium .plans {
+    grid-template-columns: 1fr;
+  }
+
+  /* 14 · Images, 15 · Validation : les deux colonnes l'une sous l'autre */
+  div.s-14-images .two,
+  div.s-15-validation .two {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  div.s-15-validation .look {
+    grid-template-columns: 120px minmax(0, 1fr);
+  }
+
+  /* 16 · Création : la barre de progression passe sous le nom de l'étape */
+  div.s-16-creation .tasks li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+  }
+
+  div.s-16-creation .tasks li > :nth-child(2) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  /* 17 · Votre ebook : les commentaires sous la double page */
+  div.s-17-votre-ebook .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  div.s-17-votre-ebook .viewer {
+    padding: 18px 12px;
+  }
+
+  div.s-17-votre-ebook .viewer .spread {
+    font-size: 11px;
+  }
+
+  div.s-17-votre-ebook .strip {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  div.s-17-votre-ebook .comments {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  /* 18 · Téléchargement : couverture au-dessus, formats en liste */
+  div.s-18-telechargement .two {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  div.s-18-telechargement .two .cover {
+    width: 160px;
+  }
+
+  div.s-18-telechargement .format {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 10px 12px;
+  }
+
+  div.s-18-telechargement .format > .btn {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+
+  /* 19 · Bibliothèque, 20 · Kit de marque, 21 · Compte : marges de téléphone */
+  div.s-19-bibliotheque .content,
+  div.s-20-kit-de-marque .content,
+  div.s-21-compte .content {
+    padding: 24px 16px 88px;
+  }
+
+  div.s-19-bibliotheque .head {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  div.s-19-bibliotheque .shelf {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  div.s-20-kit-de-marque .content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  div.s-20-kit-de-marque .row,
+  div.s-21-compte .plans {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}

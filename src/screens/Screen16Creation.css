@@ -1,0 +1,5 @@
+/* Styles propres à l'écran « Création en cours » */
+.s-16-creation .tasks li { display: grid; grid-template-columns: 1fr 160px 110px; gap: 16px; align-items: center; padding: 15px 0; border-top: 1px solid var(--line); font-size: 15px; color: var(--green); }
+    .s-16-creation .tasks li:last-child { border-bottom: 1px solid var(--line); }
+    .s-16-creation .tasks .state { font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; text-align: right; }
+    .s-16-creation .tasks .waiting { color: var(--grey-green); }
